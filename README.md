@@ -48,5 +48,12 @@ return new \behaviour\of\TheClass('ReflectionClass', [
   it('can be constructed with a class name', function() {
     shouldBe(\ReflectionClass::class, new \ReflectionClass(Fixture::class));
   }),
+
+  // @see http://de3.php.net/manual/de/reflectionclass.getname.php
+  its('getName', [
+    it('returns the class\' name', function() {
+      shouldEqual(Fixture::class, newFixture()->getName());
+    }),
+  ]),
 ]);
 ```

@@ -1,4 +1,4 @@
-<?php namespace test\date_create;
+<?php namespace test\php\ext\date\date_create;
 
 // @see http://de3.php.net/manual/de/datetime.construct.php
 // @see http://de3.php.net/manual/de/datetime.formats.php
