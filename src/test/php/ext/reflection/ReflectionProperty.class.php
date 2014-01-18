@@ -7,6 +7,8 @@ class Base {
 class Fixture extends Base {
   public $field;
   private $internal;
+  /** Documented */
+  private static $documented;
 }
 
 function fixtureField($name) {
@@ -74,6 +76,16 @@ return new \behaviour\of\TheClass('ReflectionProperty', [
       }),
     ]),
 
+    // @see http://de3.php.net/manual/de/reflectionproperty.getdoccomment.php
+    its('getDocComment', [
+      it('returns false for fields without doc comment', function() {
+        shouldEqual(false, fixtureField('field')->getDocComment());
+      }),
+
+      it('returns the complete comment', function() {
+        shouldEqual('/** Documented */', fixtureField('documented')->getDocComment());
+      }),
+    ]),
 
     // @see https://github.com/facebook/hhvm/issues/1572
     it('Has a cloning implementation', function() {
