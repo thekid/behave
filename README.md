@@ -61,3 +61,26 @@ return new \behaviour\of\TheClass('ReflectionClass', [
   ]),
 ]);
 ```
+
+### Test API
+
+```php
+/** Creates a new assertion generator with a description **/
+it(string $description, callable $verification) : generator<Assertion>
+
+/** Creates a new parameterized assertion generator **/
+it(string $description, array $values, callable $verification) : generator<Assertion>
+
+/** Creates a new assertion generator for a given group **/
+its(string $group, array $assertions) : generator<Assertion>
+
+/** Create a new parameterized assertion generator **/
+given(mixed $value, generator<Assertion> $assertions) : generator<Assertion>
+```
+
+### Skipping tests
+```php
+skip('To be implemented')->it('can be used without arguments', function() {
+  // ...
+});
+```

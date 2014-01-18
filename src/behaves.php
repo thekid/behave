@@ -30,6 +30,22 @@
   }
 
   /**
+   * Skip any verification
+   */
+  class Skip {
+    protected $reason, $assertions;
+
+    public function __construct($reason) {
+      $this->reason= $reason;
+      $this->assertions= function() { return []; };
+    }
+
+    public function it() { return $this->assertions; }
+    public function its() { return $this->assertions; }
+    public function given() { return $this->assertions; }
+  }
+
+  /**
    * Assertion failures are reported as this specialized exception
    */
   class AssertionFailed extends \Exception {
@@ -183,6 +199,10 @@ namespace {
         yield $assertion;
       }
     };
+  }
+
+  function skip($reason) {
+    return new \behaviour\of\Skip($reason);
   }
 
   function shouldEqual($expected, $actual) {
