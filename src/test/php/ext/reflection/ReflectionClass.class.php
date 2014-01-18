@@ -277,7 +277,7 @@ return new \behaviour\of\TheClass('ReflectionClass', [
     ]),
 
     // @see http://de3.php.net/manual/de/reflectionclass.iscloneable.php
-    its('isCloneable', [
+    skip('Does not exist')->its('isCloneable', [
       it('returns false for interfaces', function() {
         shouldEqual(false, declaration('interface %s { }')->isCloneable());
       }),

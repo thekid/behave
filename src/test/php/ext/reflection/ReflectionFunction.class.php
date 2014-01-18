@@ -67,7 +67,7 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
     ]),
 
     // @see http://de3.php.net/manual/de/reflectionfunctionabstract.innamespace.php
-    its('inNamespace', [
+    skip('Does not exist')->its('inNamespace', [
       it('returns true for function in namespace', function() {
         shouldEqual(true, newFixture()->inNamespace());
       }),
@@ -89,7 +89,7 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
     ]),
 
     // @see http://de3.php.net/manual/de/reflectionfunctionabstract.getextension.php
-    its('getExtension', [
+    skip('Does not exist')->its('getExtension', [
       it('returns internal functions\' extension', function() {
         shouldEqual('standard', newInternal()->getExtension()->name);
       }),
@@ -100,7 +100,7 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
     ]),
 
     // @see http://de3.php.net/manual/de/reflectionfunctionabstract.getextensionname.php
-    its('getExtensionName', [
+    skip('Does not exist')->its('getExtensionName', [
       it('returns internal functions\' extension', function() {
         shouldEqual('standard', newInternal()->getExtensionName());
       }),
@@ -220,7 +220,7 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
     ]),
 
     // @see http://de3.php.net/manual/de/reflectionfunctionabstract.isdeprecated.php
-    its('isDeprecated', [
+    skip('Does not exist')->its('isDeprecated', [
       it('returns false for non-deprecated functions', [newFixture(), newInternal()], function($fixture) {
         shouldEqual(false, $fixture->isDeprecated());
       }),
