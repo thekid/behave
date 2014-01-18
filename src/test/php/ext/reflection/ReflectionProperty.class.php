@@ -2,6 +2,7 @@
 
 class Base {
   protected $inherited;
+  public static $EMPTY = null;
 }
 class Fixture extends Base {
   public $field;
@@ -53,6 +54,26 @@ return new \behaviour\of\TheClass('ReflectionProperty', [
         shouldEqual(Base::class, fixtureField('inherited')->getDeclaringClass()->name);
       }),
     ]),
+
+    // @see http://de3.php.net/manual/de/reflectionproperty.getmodifiers.php
+    its('getModifiers', [
+      it('return PUBLIC', function() {
+        shouldEqual(\ReflectionProperty::IS_PUBLIC, fixtureField('field')->getModifiers());
+      }),
+
+      it('return PROTECTED', function() {
+        shouldEqual(\ReflectionProperty::IS_PROTECTED, fixtureField('inherited')->getModifiers());
+      }),
+
+      it('return PRIVATE', function() {
+        shouldEqual(\ReflectionProperty::IS_PRIVATE, fixtureField('internal')->getModifiers());
+      }),
+
+      it('return PUBLIC STATIC', function() {
+        shouldEqual(\ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_STATIC, fixtureField('EMPTY')->getModifiers());
+      }),
+    ]),
+
 
     // @see https://github.com/facebook/hhvm/issues/1572
     it('Has a cloning implementation', function() {
