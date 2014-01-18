@@ -618,5 +618,11 @@ return new \behaviour\of\TheClass('ReflectionClass', [
         shouldEqual(false, newInternal()->getEndLine());
       }),
     ]),
+
+
+    // @see https://github.com/facebook/hhvm/issues/1572
+    it('Has a cloning implementation', function() {
+      shouldEqual(true, method_exists('ReflectionClass', '__clone'));
+    }),
   ]
 ]);

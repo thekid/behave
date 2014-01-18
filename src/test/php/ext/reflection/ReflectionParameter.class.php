@@ -340,5 +340,10 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
         shouldEqual(Fixture::class.'::CONSTANT', $params[2]->getDefaultValueConstantName());
       }),
     ])),
+
+    // @see https://github.com/facebook/hhvm/issues/1572
+    it('Has a cloning implementation', function() {
+      shouldEqual(true, method_exists('ReflectionParameter', '__clone'));
+    }),
   ]
 ]);

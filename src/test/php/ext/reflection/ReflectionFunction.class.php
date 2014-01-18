@@ -304,5 +304,11 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
         shouldEqual(['a' => 1, 'b' => 2], declaration('function %s() { static $a= 1, $b= 2; }')->getStaticVariables());
       }),
     ]),
+
+
+    // @see https://github.com/facebook/hhvm/issues/1572
+    it('Has a cloning implementation', function() {
+      shouldEqual(true, method_exists('ReflectionFunction', '__clone'));
+    }),
   ]
 ]);
