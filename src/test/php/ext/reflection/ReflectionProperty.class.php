@@ -46,12 +46,12 @@ return new \behaviour\of\TheClass('ReflectionProperty', [
 
     // @see http://de3.php.net/manual/de/reflectionproperty.getdeclaringclass.php
     its('getDeclaringClass', [
-      it('returns the declaring class', function() {
-        shouldEqual(Fixture::class, fixtureField('field')->getDeclaringClass()->name);
+      it('returns the declaring class', ['field', 'internal'], function($prop) {
+        shouldEqual(Fixture::class, fixtureField($prop)->getDeclaringClass()->name);
       }),
 
-      it('returns the declaring class for inherited properties', function() {
-        shouldEqual(Base::class, fixtureField('inherited')->getDeclaringClass()->name);
+      it('returns the declaring class for inherited properties', ['inherited', 'EMPTY'], function($prop) {
+        shouldEqual(Base::class, fixtureField($prop)->getDeclaringClass()->name);
       }),
     ]),
 
