@@ -50,11 +50,11 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     }),
 
     it('can be constructed with a function name and an integer', function() {
-      shouldBe(\ReflectionParameter::class, functionParameter(0));
+      shouldBe(\__NAMESPACE__.'ReflectionParameter', functionParameter(0));
     }),
 
     it('can be constructed with a function and an string', ['param', 'second'], function($name) {
-      shouldBe(\ReflectionParameter::class, functionParameter($name));
+      shouldBe(\__NAMESPACE__.'ReflectionParameter', functionParameter($name));
     }),
 
     it('will have a public member "name"', [0, 'param'], function($arg) {
@@ -62,19 +62,19 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     }),
 
     it('raises an exception for unknown offsets', [-1, 2], function($offset) {
-      shouldThrow(\ReflectionException::class, '/The parameter specified by its offset could not be found/', function() use($offset) {
+      shouldThrow(\__NAMESPACE__.'ReflectionException', '/The parameter specified by its offset could not be found/', function() use($offset) {
         functionParameter($offset);
       });
     }),
 
     it('raises an exception for unknown names', [null, '', '__non-existant__'], function($name) {
-      shouldThrow(\ReflectionException::class, '/The parameter specified by its name could not be found/', function() use($name) {
+      shouldThrow(\__NAMESPACE__.'ReflectionException', '/The parameter specified by its name could not be found/', function() use($name) {
         functionParameter($name);
       });
     }),
 
     it('is not case-insensitive', function() {
-      shouldThrow(\ReflectionException::class, '/The parameter specified by its name could not be found/', function() {
+      shouldThrow(\__NAMESPACE__.'ReflectionException', '/The parameter specified by its name could not be found/', function() {
         functionParameter('PARAM');
       });
     }),
@@ -85,7 +85,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     }),
 
     it('can be retrieved via ReflectionMethod\'s getParameters()', function() {
-      $param= (new \ReflectionMethod(Fixture::class, 'method'))->getParameters()[0];
+      $param= (new \ReflectionMethod(__NAMESPACE__.'Fixture', 'method'))->getParameters()[0];
       shouldEqual('param', $param->name);
     }),
 
@@ -106,7 +106,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     // @see http://de3.php.net/manual/de/reflectionparameter.getdeclaringclass.php
     its('getDeclaringClass', [
       it('returns the declaring class', function() {
-        shouldEqual(Fixture::class, methodParameter('method', 0)->getDeclaringClass()->name);
+        shouldEqual(__NAMESPACE__.'Fixture', methodParameter('method', 0)->getDeclaringClass()->name);
       }),
 
       it('returns null when the parameter belongs to a function', function() {
@@ -137,17 +137,17 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
       }),
 
       it('returns ReflectionClass instance for typehinted parameters', function($params) {
-        shouldEqual(Fixture::class, $params[2]->getClass()->name);
+        shouldEqual(__NAMESPACE__.'Fixture', $params[2]->getClass()->name);
       })
     ])),
     its('getClass', [
 
       it('returns ReflectionClass instance for parameters typehinted with "self"', function() {
-        shouldEqual(Fixture::class, methodParameter('newInstance', 0)->getClass()->name);
+        shouldEqual(__NAMESPACE__.'Fixture', methodParameter('newInstance', 0)->getClass()->name);
       }),
 
       it('returns ReflectionClass instance for parameters typehinted with "parent"', function() {
-        shouldEqual(Base::class, methodParameter('copyOf', 0)->getClass()->name);
+        shouldEqual(__NAMESPACE__.'Base', methodParameter('copyOf', 0)->getClass()->name);
       }),
     ]),
 
@@ -287,7 +287,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     given(signature('($a, $b= null, $c= Fixture::CONSTANT)'), its('isDefaultValueConstant', [
 
       it('raises an exception when called for required parameters', function($params) {
-        shouldThrow(\ReflectionException::class, '/Failed to retrieve the default value/', function() use($params) {
+        shouldThrow(\__NAMESPACE__.'ReflectionException', '/Failed to retrieve the default value/', function() use($params) {
           $params[0]->isDefaultValueConstant();
         });
       }),
@@ -305,7 +305,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     given(signature('($a, $b= null, $c= Fixture::CONSTANT, $d= [1, 2, 3])'), its('getDefaultValue', [
 
       it('raises an exception when called for required parameters', function($params) {
-        shouldThrow(\ReflectionException::class, '/Failed to retrieve the default value/', function() use($params) {
+        shouldThrow(\__NAMESPACE__.'ReflectionException', '/Failed to retrieve the default value/', function() use($params) {
           $params[0]->getDefaultValue();
         });
       }),
@@ -327,7 +327,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     given(signature('($a, $b= null, $c= Fixture::CONSTANT)'), its('getDefaultValueConstantName', [
 
       it('raises an exception when called for required parameters', function($params) {
-        shouldThrow(\ReflectionException::class, '/Failed to retrieve the default value/', function() use($params) {
+        shouldThrow(\__NAMESPACE__.'ReflectionException', '/Failed to retrieve the default value/', function() use($params) {
           $params[0]->getDefaultValueConstantName();
         });
       }),
@@ -337,7 +337,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
       }),
 
       it('returns name of class constants', function($params) {
-        shouldEqual(Fixture::class.'::CONSTANT', $params[2]->getDefaultValueConstantName());
+        shouldEqual(__NAMESPACE__.'Fixture'.'::CONSTANT', $params[2]->getDefaultValueConstantName());
       }),
     ])),
   ]

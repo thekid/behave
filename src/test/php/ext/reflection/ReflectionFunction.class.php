@@ -33,11 +33,11 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
     }),
 
     it('can be constructed with a function name', function() {
-      shouldBe(\ReflectionFunction::class, new \ReflectionFunction('strstr'));
+      shouldBe('ReflectionFunction', new \ReflectionFunction('strstr'));
     }),
 
     it('can be constructed with a closure', function() {
-      shouldBe(\ReflectionFunction::class, new \ReflectionFunction(function() { }));
+      shouldBe('ReflectionFunction', new \ReflectionFunction(function() { }));
     }),
 
     it('will have a public member "name"', function() {
@@ -147,11 +147,11 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
       }),
 
       it('return a ReflectionParameter instance for a single parameter', function() {
-        shouldBe([\ReflectionParameter::class], declaration('function %s($a) { }')->getParameters());
+        shouldBe(['ReflectionParameter'], declaration('function %s($a) { }')->getParameters());
       }),
 
       it('return a non-empty array of ReflectionParameter instances', function() {
-        shouldBe([\ReflectionParameter::class, \ReflectionParameter::class], declaration('function %s($a, $b) { }')->getParameters());
+        shouldBe(['ReflectionParameter', 'ReflectionParameter'], declaration('function %s($a, $b) { }')->getParameters());
       }),
     ]),
 
