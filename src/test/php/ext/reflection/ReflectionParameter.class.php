@@ -310,7 +310,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     ])),
 
     // @see http://de3.php.net/manual/de/reflectionparameter.canbepassedbyvalue.php
-    skip('Does not exist')->given(signature('($a, &$b, $c= 1)'), its('canBePassedByValue', [
+    given(signature('($a, &$b, $c= 1)'), its('canBePassedByValue', [
 
       it('returns true for by-value parameters', function($params) {
         shouldEqual(true, $params[0]->canBePassedByValue());
