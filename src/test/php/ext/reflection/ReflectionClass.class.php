@@ -539,7 +539,7 @@ return new \behaviour\of\TheClass('ReflectionClass', [
     // @see http://de3.php.net/manual/de/reflectionclass.getproperty.php
     its('getProperty', [
       it('raises an exception when the property does non exist', function() {
-        shouldThrow('ReflectionException', '/Property __non-existant__ does not exist/', function() {
+        shouldThrow('ReflectionException', '/Property .+::__non-existant__ does not exist/', function() {
           declaration('class %s { }')->getProperty('__non-existant__');
         });
       }),
@@ -563,7 +563,7 @@ return new \behaviour\of\TheClass('ReflectionClass', [
     // @see http://de3.php.net/manual/de/reflectionclass.getmethod.php
     its('getMethod', [
       it('raises an exception when the method does non exist', function() {
-        shouldThrow('ReflectionException', '/Method __non-existant__ does not exist/', function() {
+        shouldThrow('ReflectionException', '/Method .+::__non-existant__ does not exist/', function() {
           declaration('class %s { }')->getMethod('__non-existant__');
         });
       }),
