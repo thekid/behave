@@ -90,7 +90,7 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
 
     // @see http://de3.php.net/manual/de/reflectionfunctionabstract.getextension.php
     its('getExtension', [
-      it('returns internal functions\' extension', function() {
+      skip('HHVM has different extension concept')->it('returns internal functions\' extension', function() {
         shouldEqual('standard', newInternal()->getExtension()->name);
       }),
 
@@ -101,7 +101,7 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
 
     // @see http://de3.php.net/manual/de/reflectionfunctionabstract.getextensionname.php
     its('getExtensionName', [
-      it('returns internal functions\' extension', function() {
+      skip('HHVM has different extension concept')->it('returns internal functions\' extension', function() {
         shouldEqual('standard', newInternal()->getExtensionName());
       }),
 

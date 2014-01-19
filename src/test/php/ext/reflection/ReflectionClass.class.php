@@ -95,7 +95,7 @@ return new \behaviour\of\TheClass('ReflectionClass', [
 
     // @see http://de3.php.net/manual/de/reflectionclass.getextension.php
     its('getExtension', [
-      it('returns internal class\' extension', function() {
+      skip('HHVM has different extension concept')->it('returns internal class\' extension', function() {
         shouldEqual('standard', newInternal()->getExtension()->name);
       }),
 
@@ -106,7 +106,7 @@ return new \behaviour\of\TheClass('ReflectionClass', [
 
     // @see http://de3.php.net/manual/de/reflectionclass.getextensionname.php
     its('getExtensionName', [
-      it('returns internal class\' extension', function() {
+      skip('HHVM has different extension concept')->it('returns internal class\' extension', function() {
         shouldEqual('standard', newInternal()->getExtensionName());
       }),
 
