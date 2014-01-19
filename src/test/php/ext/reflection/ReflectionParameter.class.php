@@ -33,6 +33,27 @@ function signature($signature) {
   return (new \ReflectionFunction(__NAMESPACE__.'\\'.$name))->getParameters();
 }
 
+// Helper: Creates anonymous object
+function newinstance($definitions) {
+  static $uniq= 0;
+
+  // Compile class body
+  $body= '';
+  foreach ($definitions as $member => $definition) {
+    if ($definition instanceof \Closure) {
+      $body.= 'function '.$member.'() { return forward_static_call_array(self::$f["'.$member.'"], func_get_args()); }';
+    } else {
+      $body.= 'public $'.$member.';';
+    }
+  }
+
+  // Define class
+  $name= 'Object__'.$uniq++;  
+  eval(sprintf('class %s { static $f= []; %s }', $name, $body));
+  $name::$f= $definitions;
+  return new $name();
+}
+
 // @see http://de3.php.net/manual/de/class.reflectionparameter.php
 return new \behaviour\of\TheClass('ReflectionParameter', [
 
@@ -53,8 +74,14 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
       shouldBe('ReflectionParameter', functionParameter(0));
     }),
 
-    it('can be constructed with a function and an string', ['param', 'second'], function($name) {
+    it('can be constructed with a function and  string', ['param', 'second'], function($name) {
       shouldBe('ReflectionParameter', functionParameter($name));
+    }),
+
+    it('can be constructed with a function and a string-castable object', function() {
+      shouldBe(\ReflectionParameter::class, functionParameter(newinstance([
+        '__toString' => function() { return 'param'; }
+      ])));
     }),
 
     it('will have a public member "name"', [0, 'param'], function($arg) {
@@ -76,6 +103,12 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     it('is not case-insensitive', function() {
       shouldThrow('ReflectionException', '/The parameter specified by its name could not be found/', function() {
         functionParameter('PARAM');
+      });
+    }),
+
+    it('handles all other types as names', [true, false, -0.5, [], [1, 2, 3], ['hello' => 'world']], function($name) {
+      shouldThrow('ReflectionException', '/The parameter specified by its name could not be found/', function() use($name) {
+        functionParameter($name);
       });
     }),
 
