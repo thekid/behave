@@ -27,6 +27,38 @@
         return $arg instanceof $types;
       }
     }
+
+    public static function toString($value, $indent= '') {
+      if (false === $value) {
+        return 'false';
+      } else if (true === $value) {
+        return 'true';
+      } else if (null === $value) {
+        return 'null';
+      } else if ($value instanceof \Closure) {
+        return '<function>';
+      } else if (is_array($value)) {
+        if (0 === key($value)) {
+          $s= '';
+          foreach ($value as $v) {
+            $s.= ', '.self::toString($v);
+          }
+          return '['.substr($s, 2).']';
+        } else {
+          $s= '{';
+          foreach ($value as $k => $v) {
+            $s.= "\n$indent".self::toString($k, '').' => '.self::toString($v, $indent.'  ');
+          }
+          return $s.'}';
+        }
+      } else if (is_object($value)) {
+        return get_class($value).'@'.self::toString(get_object_vars($value), '  ');
+      } else if (is_string($value)) {
+        return '"'.$value.'"';
+      } else {
+        return (string)$value;
+      }
+    }
   }
 
   /**
@@ -49,9 +81,35 @@
    * Assertion failures are reported as this specialized exception
    */
   class AssertionFailed extends \Exception {
+    protected $cause;
+
+    public function __construct($message, $cause= null) {
+      parent::__construct($message);
+      $this->cause= $cause;
+    }
 
     public function __toString() {
-      return $this->getMessage()."\n  ".str_replace("\n", "\n  ", $this->getTraceAsString());
+      return $this->cause
+        ? $this->getMessage().' caused by '.$this->cause
+        : parent::__toString()
+      ;
+    }
+  }
+
+  class NotEqual {
+    protected $expected, $actual;
+
+    public function __construct($expected, $actual) {
+      $this->expected= $expected;
+      $this->actual= $actual;
+    }
+
+    public function __toString() {
+      return (
+        "NotEqual()".
+        "\n  Expected: ".Values::toString($this->expected, '  ').
+        "\n  Actual:   ".Values::toString($this->actual, '  ')
+      );
     }
   }
 
@@ -209,7 +267,10 @@ namespace {
     if (\behaviour\of\Values::areEqual($expected, $actual)) {
       return $actual;
     } else {
-      throw new \behaviour\of\AssertionFailed('expected !== actual');
+      throw new \behaviour\of\AssertionFailed(
+        'expected !== actual',
+        new \behaviour\of\NotEqual($expected, $actual)
+      );
     }
   }
 
