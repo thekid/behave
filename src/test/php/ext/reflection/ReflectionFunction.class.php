@@ -67,7 +67,7 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
     ]),
 
     // @see http://de3.php.net/manual/de/reflectionfunctionabstract.innamespace.php
-    skip('Does not exist')->its('inNamespace', [
+    its('inNamespace', [
       it('returns true for function in namespace', function() {
         shouldEqual(true, newFixture()->inNamespace());
       }),
