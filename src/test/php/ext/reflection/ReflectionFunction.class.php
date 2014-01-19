@@ -303,6 +303,21 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
       it('returns variables and values as an associative array', function() {
         shouldEqual(['a' => 1, 'b' => 2], declaration('function %s() { static $a= 1, $b= 2; }')->getStaticVariables());
       }),
+
+      it('returns variable and null for uninitialized closure use variable', function() {
+        shouldEqual(['a' => null], (new \ReflectionFunction(function() use($a) { }))->getStaticVariables());
+      }),
+
+      it('returns variables and values for closure use variables', function() {
+        $a= 1;
+        $b= 2;
+        shouldEqual(['a' => 1, 'b' => 2], (new \ReflectionFunction(function() use($a, $b) { }))->getStaticVariables());
+      }),
+
+      it('returns merge of closure use and static variables as associative array', function() {
+        $a= 1;
+        shouldEqual(['a' => 1, 'b' => 2], (new \ReflectionFunction(function() use($a) { static $b= 2; }))->getStaticVariables());
+      }),
     ]),
 
 
