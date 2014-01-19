@@ -89,7 +89,7 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
     ]),
 
     // @see http://de3.php.net/manual/de/reflectionfunctionabstract.getextension.php
-    skip('Does not exist')->its('getExtension', [
+    its('getExtension', [
       it('returns internal functions\' extension', function() {
         shouldEqual('standard', newInternal()->getExtension()->name);
       }),
@@ -100,7 +100,7 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
     ]),
 
     // @see http://de3.php.net/manual/de/reflectionfunctionabstract.getextensionname.php
-    skip('Does not exist')->its('getExtensionName', [
+    its('getExtensionName', [
       it('returns internal functions\' extension', function() {
         shouldEqual('standard', newInternal()->getExtensionName());
       }),
@@ -220,7 +220,7 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
     ]),
 
     // @see http://de3.php.net/manual/de/reflectionfunctionabstract.isdeprecated.php
-    skip('Does not exist')->its('isDeprecated', [
+    its('isDeprecated', [
       it('returns false for non-deprecated functions', [newFixture(), newInternal()], function($fixture) {
         shouldEqual(false, $fixture->isDeprecated());
       }),
