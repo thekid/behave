@@ -297,6 +297,18 @@ return new \behaviour\of\TheClass('ReflectionClass', [
       it('returns true for other classes', function() {
         shouldEqual(true, declaration('class %s { }')->isCloneable());
       }),
+
+      it('returns true for classes with public __clone method', function() {
+        shouldEqual(true, declaration('class %s { public function __clone() { }}')->isCloneable());
+      }),
+
+      it('returns false for classes with private __clone method', function() {
+        shouldEqual(false, declaration('class %s { private function __clone() { }}')->isCloneable());
+      }),
+
+      it('returns false for classes with protected __clone method', function() {
+        shouldEqual(false, declaration('class %s { protected function __clone() { }}')->isCloneable());
+      }),
     ]),
 
     // @see http://de3.php.net/manual/de/reflectionclass.getModifiers.php
