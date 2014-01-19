@@ -378,5 +378,32 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     it('Has a cloning implementation', function() {
       shouldEqual(true, method_exists('ReflectionParameter', '__clone'));
     }),
+
+    // @see https://github.com/facebook/hhvm/issues/1571
+    given(signature('($a, &$b, array $c, callable $d, Fixture $e, $f= null)'), its('string casting', [
+      it('will yield indicator for required parameters', function($params) {
+        shouldEqual('Parameter #0 [ <required> $a ]', (string)$params[0]);
+      }),
+
+      it('will yield indicator for required by-ref parameters', function($params) {
+        shouldEqual('Parameter #1 [ <required> &$b ]', (string)$params[1]);
+      }),
+
+      it('will yield array type hint', function($params) {
+        shouldEqual('Parameter #2 [ <required> array $c ]', (string)$params[2]);
+      }),
+
+      it('will yield callable type hint', function($params) {
+        shouldEqual('Parameter #3 [ <required> callable $d ]', (string)$params[3]);
+      }),
+
+      it('will yield userland class type hint', function($params) {
+        shouldEqual('Parameter #4 [ <required> '.__NAMESPACE__.'\Fixture $e ]', (string)$params[4]);
+      }),
+
+      it('will yield indicator for default value for optional parameters', function($params) {
+        shouldEqual('Parameter #5 [ <optional> $f = NULL ]', (string)$params[5]);
+      }),
+    ])),
   ]
 ]);
