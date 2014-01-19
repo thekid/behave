@@ -84,6 +84,15 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
       ])));
     }),
 
+    // see https://github.com/facebook/hhvm/issues/1358
+    it('can be constructed with a closure and a string', ['a', 'b'], function($name) {
+      shouldBe(\ReflectionParameter::class, new \ReflectionParameter(function($a, $b) { }, $name));
+    }),
+
+    it('can be constructed with a closure and an integer', [0, 1], function($name) {
+      shouldBe(\ReflectionParameter::class, new \ReflectionParameter(function($a, $b) { }, $name));
+    }),
+
     it('will have a public member "name"', [0, 'param'], function($arg) {
       shouldEqual('param', functionParameter($arg)->name);
     }),
