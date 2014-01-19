@@ -329,5 +329,31 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
     it('Has a cloning implementation', function() {
       shouldEqual(true, method_exists('ReflectionFunction', '__clone'));
     }),
+
+    its('string casting', [
+      it('simplest form', function() {
+        $decl= declaration('function %s() { }');
+        shouldEqual(
+          "Function [ <user> function {$decl->name} ] {\n".
+          "  @@ ".__FILE__."(21) : eval()'d code 1 - 1\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
+
+      it('will include parameters', function() {
+        $decl= declaration('function %s($a) { }');
+        shouldEqual(
+          "Function [ <user> function {$decl->name} ] {\n".
+          "  @@ ".__FILE__."(21) : eval()'d code 1 - 1\n".
+          "\n".
+          "  - Parameters [1] {\n".
+          "    ".$decl->getParameters()[0]."\n".
+          "  }\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
+    ]),
   ]
 ]);
