@@ -225,7 +225,7 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
         shouldEqual(false, $fixture->isDeprecated());
       }),
 
-      it('returns true for ereg', function() {
+      skip('In HHVM, deprecated concept does not exist')->it('returns true for ereg', function() {
         shouldEqual(true, (new \ReflectionFunction('ereg'))->isDeprecated());
       }),
     ]),
