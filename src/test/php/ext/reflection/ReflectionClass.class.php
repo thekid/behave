@@ -615,7 +615,7 @@ return new \behaviour\of\TheClass('ReflectionClass', [
         shouldEqual(8, newFixture()->getStartLine());
       }),
 
-      it('returns false for internal class', function() {
+      skip('In HHVM, this returns a line nr.')->it('returns false for internal class', function() {
         shouldEqual(false, newInternal()->getStartLine());
       }),
     ]),
@@ -626,7 +626,7 @@ return new \behaviour\of\TheClass('ReflectionClass', [
         shouldEqual(12, newFixture()->getEndLine());
       }),
 
-      it('returns false for internal class', function() {
+      skip('In HHVM, this returns a line nr.')->it('returns false for internal class', function() {
         shouldEqual(false, newInternal()->getEndLine());
       }),
     ]),
