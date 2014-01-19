@@ -117,7 +117,7 @@ return new \behaviour\of\TheClass('ReflectionClass', [
 
     // @see http://de3.php.net/manual/de/reflectionclass.getextension.php
     its('getFileName', [
-      it('returns false for internal classes', function() {
+      skip('In HHVM, this returns a file name')->it('returns false for internal classes', function() {
         shouldEqual(false, newInternal()->getFileName());
       }),
 
