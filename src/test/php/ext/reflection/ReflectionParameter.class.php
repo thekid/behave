@@ -79,7 +79,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     }),
 
     it('can be constructed with a function and a string-castable object', function() {
-      shouldBe(\ReflectionParameter::class, functionParameter(newinstance([
+      shouldBe('ReflectionParameter', functionParameter(newinstance([
         '__toString' => function() { return 'param'; }
       ])));
     }),
