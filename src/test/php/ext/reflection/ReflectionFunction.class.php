@@ -112,7 +112,7 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
 
     // @see http://de3.php.net/manual/de/reflectionfunctionabstract.getextension.php
     its('getFileName', [
-      it('returns false for internal functions', function() {
+      skip('In HHVM, this returns a file name')->it('returns false for internal functions', function() {
         shouldEqual(false, newInternal()->getFileName());
       }),
 
@@ -274,7 +274,7 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
         shouldEqual(4, newFixture()->getStartLine());
       }),
 
-      it('returns false for internal function', function() {
+      skip('In HHVM, this returns a line nr.')->it('returns false for internal function', function() {
         shouldEqual(false, newInternal()->getStartLine());
       }),
     ]),
@@ -285,7 +285,7 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
         shouldEqual(5, newFixture()->getEndLine());
       }),
 
-      it('returns false for internal function', function() {
+      skip('In HHVM, this returns a line nr.')->it('returns false for internal function', function() {
         shouldEqual(false, newInternal()->getEndLine());
       }),
     ]),
