@@ -224,6 +224,10 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
       it('returns false for non-deprecated functions', [newFixture(), newInternal()], function($fixture) {
         shouldEqual(false, $fixture->isDeprecated());
       }),
+
+      it('returns true for ereg', function() {
+        shouldEqual(true, (new \ReflectionFunction('ereg'))->isDeprecated());
+      }),
     ]),
 
     // @see http://de3.php.net/manual/de/reflectionfunctionabstract.returnsreference.php
