@@ -373,7 +373,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     given(signature('($a, $b= null, $c= \E_ERROR, $c= Fixture::CONSTANT)'), its('getDefaultValueConstantName', [
 
       it('raises an exception when called for required parameters', function($params) {
-        shouldThrow('ReflectionException', '/Failed to retrieve the default value/', function() use($params) {
+        shouldThrow('ReflectionException', '/Parameter is not optional/', function() use($params) {
           $params[0]->getDefaultValueConstantName();
         });
       }),
@@ -387,7 +387,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
       }),
 
       it('returns name of class constants', function($params) {
-        shouldEqual(__NAMESPACE__.'\Fixture'.'::CONSTANT', $params[2]->getDefaultValueConstantName());
+        shouldEqual(__NAMESPACE__.'\Fixture'.'::CONSTANT', $params[3]->getDefaultValueConstantName());
       }),
     ])),
 
