@@ -15,7 +15,7 @@ class Fixture extends Base {
 
 // Helper: Returns a new ReflectionMethod for the fixture's method()
 function newFixture($name) {
-  return new \ReflectionMethod(Fixture::class, $name);
+  return new \ReflectionMethod(__NAMESPACE__.'\Fixture', $name);
 }
 
 // Helper: Returns ReflectionMethod for a method created dynamically via its declaration
@@ -37,11 +37,11 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
     }),
 
     it('can be constructed with a class and a method name', function() {
-      shouldBe(\ReflectionMethod::class, new \ReflectionMethod(Fixture::class, 'method'));
+      shouldBe('ReflectionMethod', new \ReflectionMethod(__NAMESPACE__.'\Fixture', 'method'));
     }),
 
     it('can be constructed with a class and a method name separated by double colon', function() {
-      shouldBe(\ReflectionMethod::class, new \ReflectionMethod(Fixture::class.'::method'));
+      shouldBe('ReflectionMethod', new \ReflectionMethod(__NAMESPACE__.'\Fixture'.'::method'));
     }),
 
     it('will have a public member "name"', function() {
@@ -131,11 +131,11 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
 
       it('returns false for private final methods', function() {
-        shouldEqual(false, (new \ReflectionMethod(Base::class, 'values'))->isPublic());
+        shouldEqual(false, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'values'))->isPublic());
       }),
 
       it('returns false for protected abstract methods', function() {
-        shouldEqual(false, (new \ReflectionMethod(Base::class, 'value'))->isPublic());
+        shouldEqual(false, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'value'))->isPublic());
       }),
     ]),
 
@@ -158,11 +158,11 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
 
       it('returns false for private final methods', function() {
-        shouldEqual(false, (new \ReflectionMethod(Base::class, 'values'))->isProtected());
+        shouldEqual(false, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'values'))->isProtected());
       }),
 
       it('returns true for protected abstract methods', function() {
-        shouldEqual(true, (new \ReflectionMethod(Base::class, 'value'))->isProtected());
+        shouldEqual(true, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'value'))->isProtected());
       }),
     ]),
 
@@ -185,11 +185,11 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
 
       it('returns true for private final methods', function() {
-        shouldEqual(true, (new \ReflectionMethod(Base::class, 'values'))->isPrivate());
+        shouldEqual(true, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'values'))->isPrivate());
       }),
 
       it('returns false for protected abstract methods', function() {
-        shouldEqual(false, (new \ReflectionMethod(Base::class, 'value'))->isPrivate());
+        shouldEqual(false, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'value'))->isPrivate());
       }),
     ]),
 
@@ -212,11 +212,11 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
 
       it('returns false for private final methods', function() {
-        shouldEqual(false, (new \ReflectionMethod(Base::class, 'values'))->isStatic());
+        shouldEqual(false, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'values'))->isStatic());
       }),
 
       it('returns false for protected abstract methods', function() {
-        shouldEqual(false, (new \ReflectionMethod(Base::class, 'value'))->isStatic());
+        shouldEqual(false, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'value'))->isStatic());
       }),
     ]),
 
@@ -239,11 +239,11 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
 
       it('returns true for private final methods', function() {
-        shouldEqual(true, (new \ReflectionMethod(Base::class, 'values'))->isFinal());
+        shouldEqual(true, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'values'))->isFinal());
       }),
 
       it('returns false for protected abstract methods', function() {
-        shouldEqual(false, (new \ReflectionMethod(Base::class, 'value'))->isFinal());
+        shouldEqual(false, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'value'))->isFinal());
       }),
     ]),
 
@@ -266,11 +266,11 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
 
       it('returns false for private final methods', function() {
-        shouldEqual(false, (new \ReflectionMethod(Base::class, 'values'))->isAbstract());
+        shouldEqual(false, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'values'))->isAbstract());
       }),
 
       it('returns true for protected abstract methods', function() {
-        shouldEqual(true, (new \ReflectionMethod(Base::class, 'value'))->isAbstract());
+        shouldEqual(true, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'value'))->isAbstract());
       }),
     ]),
   ]
