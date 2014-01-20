@@ -59,13 +59,13 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
 
   'describe' => [
     it('raises warnings when without arguments', function() {
-      shouldRaise('/expects exactly 2 parameters, 0 given/', function() {
+      shouldRaise('/Undefined variable: param/', function() { 
         new \ReflectionParameter();
       });
     }),
 
     it('raises warnings when constructed with just one argument ', function() {
-      shouldRaise('/expects exactly 2 parameters, 1 given/', function() {
+      shouldThrow('ReflectionException', '/Function __irrelevant__ does not exist/', function() { 
         new \ReflectionParameter('__irrelevant__');
       });
     }),

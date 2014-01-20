@@ -31,7 +31,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
 
   'describe' => [
     it('raises warnings when constructed without arguments', function() {
-      shouldRaise('/expects exactly 1 parameter, 0 given/', function() {
+      shouldThrow('ReflectionException', '/Method :: does not exist/', function() {
         new \ReflectionMethod();
       });
     }),

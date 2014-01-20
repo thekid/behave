@@ -27,7 +27,7 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
 
   'describe' => [
     it('raises warnings when without arguments', function() {
-      shouldRaise('/expects exactly 1 parameter, 0 given/', function() {
+      shouldThrow('ReflectionException', '/Function  does not exist/', function() {
         new \ReflectionFunction();
       });
     }),

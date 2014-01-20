@@ -20,13 +20,13 @@ return new \behaviour\of\TheClass('ReflectionProperty', [
 
   'describe' => [
     it('raises warnings when without arguments', function() {
-      shouldRaise('/expects exactly 2 parameters, 0 given/', function() {
+      shouldThrow('ReflectionException', '/Parameters must not be null/', function() { 
         new \ReflectionProperty();
       });
     }),
 
     it('raises warnings when constructed with just one argument ', function() {
-      shouldRaise('/expects exactly 2 parameters, 1 given/', function() {
+      shouldThrow('ReflectionException', '/Parameters must not be null/', function() { 
         new \ReflectionProperty('__irrelevant__');
       });
     }),
