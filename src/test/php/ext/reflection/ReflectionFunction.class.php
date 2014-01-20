@@ -391,6 +391,49 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
         );
       }),
 
+      it('closure form', function() {
+        $decl= new \ReflectionFunction(function() {
+          // Empty
+        });
+        shouldEqual(
+          "Closure [ <user> function {$decl->name} ] {\n".
+          "  @@ ".__FILE__." ".$decl->getStartLine()." - ".$decl->getEndLine()."\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
+
+      it('includes parameters in closure form', function() {
+        $decl= new \ReflectionFunction(function($a) {
+          // Empty
+        });
+        shouldEqual(
+          "Closure [ <user> function {$decl->name} ] {\n".
+          "  @@ ".__FILE__." ".$decl->getStartLine()." - ".$decl->getEndLine()."\n".
+          "\n".
+          "  - Parameters [1] {\n".
+          "    ".$decl->getParameters()[0]."\n".
+          "  }\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
+
+      it('includes bound variables in closure form', function() {
+        $decl= new \ReflectionFunction(function() use($a) {
+          // Empty
+        });
+        shouldEqual(
+          "Closure [ <user> function {$decl->name} ] {\n".
+          "  @@ ".__FILE__." ".$decl->getStartLine()." - ".$decl->getEndLine()."\n".
+          "\n".
+          "  - Bound Variables [1] {\n".
+          "      Variable #0 [ \$a ]\n".
+          "  }\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
     ]),
   ]
 ]);
