@@ -330,8 +330,8 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     // @see http://de3.php.net/manual/de/reflectionparameter.isdefaultvalueconstant.php
     its('isDefaultValueConstant', [
 
-      it('raises an exception when called for required parameters', function($params) {
-        shouldThrow(\ReflectionException::class, '/Failed to retrieve the default value/', function() use($params) {
+      it('raises an exception when called for required parameters', function() {
+        shouldThrow(\ReflectionException::class, '/Failed to retrieve the default value/', function() {
           functionParameter(0)->isDefaultValueConstant();
         });
       }),
