@@ -428,7 +428,7 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
           "  @@ ".__FILE__." ".$decl->getStartLine()." - ".$decl->getEndLine()."\n".
           "\n".
           "  - Bound Variables [1] {\n".
-          "      Variable #0 [ \$a ]\n".
+          "    Variable #0 [ \$a ]\n".
           "  }\n".
           "}\n",
           (string)$decl
