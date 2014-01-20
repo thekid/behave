@@ -1,14 +1,21 @@
 <?php namespace test\php\ext\reflection\ReflectionMethod;
 
 // Fixtures
-class Fixture {
-  function method() { 
-  }
+abstract class Base {
+  protected function inherited() { }
+  public static function valueOf() { }
+  private final function values() { }
+  protected abstract function value();
+}
+class Fixture extends Base {
+  public function method() { }
+  private function internal() { }
+  protected function value() { }
 }
 
 // Helper: Returns a new ReflectionMethod for the fixture's method()
-function newFixture() {
-  return new \ReflectionMethod(__NAMESPACE__.'\Fixture::method');
+function newFixture($name) {
+  return new \ReflectionMethod(Fixture::class, $name);
 }
 
 // Helper: Returns ReflectionMethod for a method created dynamically via its declaration
@@ -38,13 +45,13 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
     }),
 
     it('will have a public member "name"', function() {
-      shouldEqual('method', newFixture()->name);
+      shouldEqual('method', newFixture('method')->name);
     }),
 
     // @see http://de3.php.net/manual/de/reflectionfunctionabstract.getname.php
     its('getName', [
       it('returns the methods\'s name', function() {
-        shouldEqual('method', newFixture()->getName());
+        shouldEqual('method', newFixture('method')->getName());
       }),
     ]),
 
@@ -102,6 +109,168 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
 
       it('return 2 for two required parameters and one optional', function() {
         shouldEqual(2, declaration('function %s($a, $b, $c= null) { }')->getNumberOfRequiredParameters());
+      }),
+    ]),
+
+    // @see http://de3.php.net/manual/de/reflectionmethod.ispublic.php
+    its('isPublic', [
+      it('returns true for public methods', function() {
+        shouldEqual(true, newFixture('method')->isPublic());
+      }),
+
+      it('returns true for public static methods', function() {
+        shouldEqual(true, newFixture('valueOf')->isPublic());
+      }),
+
+      it('returns false for protected methods', function() {
+        shouldEqual(false, newFixture('inherited')->isPublic());
+      }),
+
+      it('returns false for private methods', function() {
+        shouldEqual(false, newFixture('internal')->isPublic());
+      }),
+
+      it('returns false for private final methods', function() {
+        shouldEqual(false, (new \ReflectionMethod(Base::class, 'values'))->isPublic());
+      }),
+
+      it('returns false for protected abstract methods', function() {
+        shouldEqual(false, (new \ReflectionMethod(Base::class, 'value'))->isPublic());
+      }),
+    ]),
+
+    // @see http://de3.php.net/manual/de/reflectionmethod.isprotected.php
+    its('isProtected', [
+      it('returns false for public methods', function() {
+        shouldEqual(false, newFixture('method')->isProtected());
+      }),
+
+      it('returns false for public static methods', function() {
+        shouldEqual(false, newFixture('valueOf')->isProtected());
+      }),
+
+      it('returns true for protected methods', function() {
+        shouldEqual(true, newFixture('inherited')->isProtected());
+      }),
+
+      it('returns false for private methods', function() {
+        shouldEqual(false, newFixture('internal')->isProtected());
+      }),
+
+      it('returns false for private final methods', function() {
+        shouldEqual(false, (new \ReflectionMethod(Base::class, 'values'))->isProtected());
+      }),
+
+      it('returns true for protected abstract methods', function() {
+        shouldEqual(true, (new \ReflectionMethod(Base::class, 'value'))->isProtected());
+      }),
+    ]),
+
+    // @see http://de3.php.net/manual/de/reflectionmethod.isprivate.php
+    its('isPrivate', [
+      it('returns false for public methods', function() {
+        shouldEqual(false, newFixture('method')->isPrivate());
+      }),
+
+      it('returns false for public static methods', function() {
+        shouldEqual(false, newFixture('valueOf')->isPrivate());
+      }),
+
+      it('returns false for protected methods', function() {
+        shouldEqual(false, newFixture('inherited')->isPrivate());
+      }),
+
+      it('returns true for private methods', function() {
+        shouldEqual(true, newFixture('internal')->isPrivate());
+      }),
+
+      it('returns true for private final methods', function() {
+        shouldEqual(true, (new \ReflectionMethod(Base::class, 'values'))->isPrivate());
+      }),
+
+      it('returns false for protected abstract methods', function() {
+        shouldEqual(false, (new \ReflectionMethod(Base::class, 'value'))->isPrivate());
+      }),
+    ]),
+
+    // @see http://de3.php.net/manual/de/reflectionmethod.isstatic.php
+    its('isStatic', [
+      it('returns false for public methods', function() {
+        shouldEqual(false, newFixture('method')->isStatic());
+      }),
+
+      it('returns true for public static methods', function() {
+        shouldEqual(true, newFixture('valueOf')->isStatic());
+      }),
+
+      it('returns false for protected methods', function() {
+        shouldEqual(false, newFixture('inherited')->isStatic());
+      }),
+
+      it('returns false for private methods', function() {
+        shouldEqual(false, newFixture('internal')->isStatic());
+      }),
+
+      it('returns false for private final methods', function() {
+        shouldEqual(false, (new \ReflectionMethod(Base::class, 'values'))->isStatic());
+      }),
+
+      it('returns false for protected abstract methods', function() {
+        shouldEqual(false, (new \ReflectionMethod(Base::class, 'value'))->isStatic());
+      }),
+    ]),
+
+    // @see http://de3.php.net/manual/de/reflectionmethod.isfinal.php
+    its('isFinal', [
+      it('returns false for public methods', function() {
+        shouldEqual(false, newFixture('method')->isFinal());
+      }),
+
+      it('returns false for public static methods', function() {
+        shouldEqual(false, newFixture('valueOf')->isFinal());
+      }),
+
+      it('returns false for protected methods', function() {
+        shouldEqual(false, newFixture('inherited')->isFinal());
+      }),
+
+      it('returns false for private methods', function() {
+        shouldEqual(false, newFixture('internal')->isFinal());
+      }),
+
+      it('returns true for private final methods', function() {
+        shouldEqual(true, (new \ReflectionMethod(Base::class, 'values'))->isFinal());
+      }),
+
+      it('returns false for protected abstract methods', function() {
+        shouldEqual(false, (new \ReflectionMethod(Base::class, 'value'))->isFinal());
+      }),
+    ]),
+
+    // @see http://de3.php.net/manual/de/reflectionmethod.isAbstract.php
+    its('isAbstract', [
+      it('returns false for public methods', function() {
+        shouldEqual(false, newFixture('method')->isAbstract());
+      }),
+
+      it('returns false for public static methods', function() {
+        shouldEqual(false, newFixture('valueOf')->isAbstract());
+      }),
+
+      it('returns false for protected methods', function() {
+        shouldEqual(false, newFixture('inherited')->isAbstract());
+      }),
+
+      it('returns false for private methods', function() {
+        shouldEqual(false, newFixture('internal')->isAbstract());
+      }),
+
+      it('returns false for private final methods', function() {
+        shouldEqual(false, (new \ReflectionMethod(Base::class, 'values'))->isAbstract());
+      }),
+
+      it('returns true for protected abstract methods', function() {
+        shouldEqual(true, (new \ReflectionMethod(Base::class, 'value'))->isAbstract());
       }),
     ]),
   ]
