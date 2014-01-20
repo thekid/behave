@@ -326,7 +326,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     ])),
 
     // @see http://de3.php.net/manual/de/reflectionparameter.isdefaultvalueconstant.php
-    given(signature('($a, $b= null, $c= Fixture::CONSTANT)'), its('isDefaultValueConstant', [
+    given(signature('($a, $b= null, $c= \E_ERROR, $d= Fixture::CONSTANT)'), its('isDefaultValueConstant', [
 
       it('raises an exception when called for required parameters', function($params) {
         shouldThrow(\ReflectionException::class, '/Failed to retrieve the default value/', function() use($params) {
@@ -338,8 +338,12 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
         shouldEqual(false, $params[1]->isDefaultValueConstant());
       }),
 
-      it('returns true for class constants', function($params) {
+      it('returns true for global constants', function($params) {
         shouldEqual(true, $params[2]->isDefaultValueConstant());
+      }),
+
+      it('returns true for class constants', function($params) {
+        shouldEqual(true, $params[3]->isDefaultValueConstant());
       }),
     ])),
 
@@ -366,7 +370,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     ])),
 
     // @see http://de3.php.net/manual/de/reflectionparameter.getdefaultvalueconstantname.php
-    given(signature('($a, $b= null, $c= Fixture::CONSTANT)'), its('getDefaultValueConstantName', [
+    given(signature('($a, $b= null, $c= \E_ERROR, $c= Fixture::CONSTANT)'), its('getDefaultValueConstantName', [
 
       it('raises an exception when called for required parameters', function($params) {
         shouldThrow(\ReflectionException::class, '/Failed to retrieve the default value/', function() use($params) {
@@ -374,12 +378,16 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
         });
       }),
 
-      it('returns false for null default', function($params) {
+      it('returns null for null default', function($params) {
         shouldEqual(null, $params[1]->getDefaultValueConstantName());
       }),
 
+      it('returns name for global constants', function($params) {
+        shouldEqual('E_ERROR', $params[2]->getDefaultValueConstantName());
+      }),
+
       it('returns name of class constants', function($params) {
-        shouldEqual(Fixture::class.'::CONSTANT', $params[2]->getDefaultValueConstantName());
+        shouldEqual(Fixture::class.'::CONSTANT', $params[3]->getDefaultValueConstantName());
       }),
     ])),
 
