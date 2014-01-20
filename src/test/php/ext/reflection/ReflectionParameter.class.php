@@ -328,7 +328,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     ])),
 
     // @see http://de3.php.net/manual/de/reflectionparameter.isdefaultvalueconstant.php
-    given(signature('($a, $b= null, $c= \E_ERROR, $d= Fixture::CONSTANT, $d= CONSTANT, $e= [\E_ERROR], $f= "E_ERROR")'), its('isDefaultValueConstant', [
+    given(signature('($a, $b= null, $c= \E_ERROR, $d= Fixture::CONSTANT, $e= CONSTANT, $f= [\E_ERROR], $g= "E_ERROR")'), its('isDefaultValueConstant', [
 
       it('raises an exception when called for required parameters', function($params) {
         shouldThrow(\ReflectionException::class, '/Failed to retrieve the default value/', function() use($params) {
@@ -384,7 +384,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     ])),
 
     // @see http://de3.php.net/manual/de/reflectionparameter.getdefaultvalueconstantname.php
-    given(signature('($a, $b= null, $c= \E_ERROR, $c= Fixture::CONSTANT, $d= CONSTANT, $e= [\E_ERROR], $f= "E_ERROR")'), its('getDefaultValueConstantName', [
+    given(signature('($a, $b= null, $c= \E_ERROR, $d= Fixture::CONSTANT, $e= CONSTANT, $f= [\E_ERROR], $g= "E_ERROR")'), its('getDefaultValueConstantName', [
 
       it('raises an exception when called for required parameters', function($params) {
         shouldThrow(\ReflectionException::class, '/Failed to retrieve the default value/', function() use($params) {
