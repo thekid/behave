@@ -379,7 +379,7 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
 
       it('internal form', function() {
         shouldEqual(
-          "Function [ <internal:standard> function strstr ] {\n".
+          "Function [ <internal> function strstr ] {\n".
           "\n".
           "  - Parameters [3] {\n".
           "    Parameter #0 [ <required> \$haystack ]\n".
