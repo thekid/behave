@@ -344,10 +344,10 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     ])),
 
     // @see http://de3.php.net/manual/de/reflectionparameter.getdefaultvalue.php
-    skip('Const issue')->given(signature('($a, $b= null, $c= /**Fixture::*/CONSTANT, $d= [1, 2, 3])'), its('getDefaultValue', [
+    given(signature('($a, $b= null, $c= Fixture::CONSTANT, $d= [1, 2, 3])'), its('getDefaultValue', [
 
       it('raises an exception when called for required parameters', function($params) {
-        shouldThrow('ReflectionException', '/Failed to retrieve the default value/', function() use($params) {
+        shouldThrow('ReflectionException', '/Parameter is not optional/', function() use($params) {
           $params[0]->getDefaultValue();
         });
       }),
