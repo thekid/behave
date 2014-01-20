@@ -103,7 +103,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
         shouldEqual(0, declaration('function %s($a= null) { }')->getNumberOfRequiredParameters());
       }),
 
-      it('return 2 for two parameters', function() {
+      it('returns 2 for two parameters', function() {
         shouldEqual(2, declaration('function %s($a, $b) { }')->getNumberOfRequiredParameters());
       }),
 
