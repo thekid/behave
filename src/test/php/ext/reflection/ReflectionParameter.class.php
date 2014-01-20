@@ -326,7 +326,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     ])),
 
     // @see http://de3.php.net/manual/de/reflectionparameter.isdefaultvalueconstant.php
-    skip('Const issue')->given(signature('($a, $b= null, $c= /**Fixture::*/CONSTANT)'), its('isDefaultValueConstant', [
+    skip('isDefaultValueConstant does not exist')->given(signature('($a, $b= null, $c= /**Fixture::*/CONSTANT)'), its('isDefaultValueConstant', [
 
       it('raises an exception when called for required parameters', function($params) {
         shouldThrow('ReflectionException', '/Failed to retrieve the default value/', function() use($params) {
@@ -344,7 +344,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     ])),
 
     // @see http://de3.php.net/manual/de/reflectionparameter.getdefaultvalue.php
-    skip('Const issue')->given(signature('($a, $b= null, $c= /**Fixture::*/CONSTANT, $d= [1, 2, 3])'), its('getDefaultValue', [
+    given(signature('($a, $b= null, $c= Fixture::CONSTANT, $d= [1, 2, 3])'), its('getDefaultValue', [
 
       it('raises an exception when called for required parameters', function($params) {
         shouldThrow('ReflectionException', '/Failed to retrieve the default value/', function() use($params) {

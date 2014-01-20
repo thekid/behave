@@ -54,13 +54,13 @@ return new \behaviour\of\TheClass('ReflectionClass', [
     }),
 
     it('will have a public member "name"', function() {
-      shouldEqual(__NAMESPACE__.'\Fixture', newFixture()->name);
+      shouldEqual(Fixture::class, newFixture()->name);
     }),
 
     // @see http://de3.php.net/manual/de/reflectionclass.getname.php
     its('getName', [
       it('returns the class\' name', function() {
-        shouldEqual(__NAMESPACE__.'\Fixture', newFixture()->getName());
+        shouldEqual(Fixture::class, newFixture()->getName());
       }),
     ]),
 

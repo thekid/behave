@@ -57,49 +57,49 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
 
     // @see http://de3.php.net/manual/de/reflectionfunctionabstract.getnumberofparameters.php
     its('getNumberOfParameters', [
-      it('return 0 for empty parameter list', function() {
+      it('returns 0 for empty parameter list', function() {
         shouldEqual(0, declaration('function %s() { }')->getNumberOfParameters());
       }),
 
-      it('return 1 for one parameter', function() {
+      it('returns 1 for one parameter', function() {
         shouldEqual(1, declaration('function %s($a) { }')->getNumberOfParameters());
       }),
 
-      it('return 2 for two parameters', function() {
+      it('returns 2 for two parameters', function() {
         shouldEqual(2, declaration('function %s($a, $b) { }')->getNumberOfParameters());
       }),
 
-      it('return 3 for two required parameters and one optional', function() {
+      it('returns 3 for two required parameters and one optional', function() {
         shouldEqual(3, declaration('function %s($a, $b, $c= null) { }')->getNumberOfParameters());
       }),
     ]),
 
     // @see http://de3.php.net/manual/de/reflectionfunctionabstract.getParameters.php
     its('getParameters', [
-      it('return an empty array for an empty parameter list', function() {
+      it('returns an empty array for an empty parameter list', function() {
         shouldEqual([], declaration('function %s() { }')->getParameters());
       }),
 
-      it('return a ReflectionParameter instance for a single parameter', function() {
-        shouldBe([\ReflectionParameter::class], declaration('function %s($a) { }')->getParameters());
+      it('returns a ReflectionParameter instance for a single parameter', function() {
+        shouldBe(['ReflectionParameter'], declaration('function %s($a) { }')->getParameters());
       }),
 
-      it('return a non-empty array of ReflectionParameter instances', function() {
-        shouldBe([\ReflectionParameter::class, \ReflectionParameter::class], declaration('function %s($a, $b) { }')->getParameters());
+      it('returns a non-empty array of ReflectionParameter instances', function() {
+        shouldBe(['ReflectionParameter', 'ReflectionParameter'], declaration('function %s($a, $b) { }')->getParameters());
       }),
     ]),
 
     // @see http://de3.php.net/manual/de/reflectionfunctionabstract.getnumberofrequiredparameters.php
     its('getNumberOfRequiredParameters', [
-      it('return 0 for empty parameter list', function() {
+      it('returns 0 for empty parameter list', function() {
         shouldEqual(0, declaration('function %s() { }')->getNumberOfRequiredParameters());
       }),
 
-      it('return 1 for one parameter', function() {
+      it('returns 1 for one parameter', function() {
         shouldEqual(1, declaration('function %s($a) { }')->getNumberOfRequiredParameters());
       }),
 
-      it('return 0 for one optional parameter', function() {
+      it('returns 0 for one optional parameter', function() {
         shouldEqual(0, declaration('function %s($a= null) { }')->getNumberOfRequiredParameters());
       }),
 
@@ -107,7 +107,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
         shouldEqual(2, declaration('function %s($a, $b) { }')->getNumberOfRequiredParameters());
       }),
 
-      it('return 2 for two required parameters and one optional', function() {
+      it('returns 2 for two required parameters and one optional', function() {
         shouldEqual(2, declaration('function %s($a, $b, $c= null) { }')->getNumberOfRequiredParameters());
       }),
     ]),
@@ -247,7 +247,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
     ]),
 
-    // @see http://de3.php.net/manual/de/reflectionmethod.isAbstract.php
+    // @see http://de3.php.net/manual/de/reflectionmethod.isabstract.php
     its('isAbstract', [
       it('returns false for public methods', function() {
         shouldEqual(false, newFixture('method')->isAbstract());
