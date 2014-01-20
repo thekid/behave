@@ -328,7 +328,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     ])),
 
     // @see http://de3.php.net/manual/de/reflectionparameter.isdefaultvalueconstant.php
-    given(signature('($a, $b= null, $c= \E_ERROR, $d= Fixture::CONSTANT, $d= CONSTANT, $e= [\E_ERROR])'), its('isDefaultValueConstant', [
+    given(signature('($a, $b= null, $c= \E_ERROR, $d= Fixture::CONSTANT, $d= CONSTANT, $e= [\E_ERROR], $f= "E_ERROR")'), its('isDefaultValueConstant', [
 
       it('raises an exception when called for required parameters', function($params) {
         shouldThrow(\ReflectionException::class, '/Failed to retrieve the default value/', function() use($params) {
@@ -355,6 +355,10 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
       it('returns false for array default', function($params) {
         shouldEqual(false, $params[5]->isDefaultValueConstant());
       }),
+
+      it('returns false for string default', function($params) {
+        shouldEqual(false, $params[6]->isDefaultValueConstant());
+      }),
     ])),
 
     // @see http://de3.php.net/manual/de/reflectionparameter.getdefaultvalue.php
@@ -380,7 +384,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     ])),
 
     // @see http://de3.php.net/manual/de/reflectionparameter.getdefaultvalueconstantname.php
-    given(signature('($a, $b= null, $c= \E_ERROR, $c= Fixture::CONSTANT, $d= CONSTANT, $e= [\E_ERROR])'), its('getDefaultValueConstantName', [
+    given(signature('($a, $b= null, $c= \E_ERROR, $c= Fixture::CONSTANT, $d= CONSTANT, $e= [\E_ERROR], $f= "E_ERROR")'), its('getDefaultValueConstantName', [
 
       it('raises an exception when called for required parameters', function($params) {
         shouldThrow(\ReflectionException::class, '/Failed to retrieve the default value/', function() use($params) {
@@ -408,6 +412,9 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
         shouldEqual(null, $params[5]->getDefaultValueConstantName());
       }),
 
+      it('returns null for string default', function($params) {
+        shouldEqual(null, $params[6]->getDefaultValueConstantName());
+      }),
     ])),
 
     // @see https://github.com/facebook/hhvm/issues/1572
