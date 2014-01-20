@@ -328,28 +328,49 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     ])),
 
     // @see http://de3.php.net/manual/de/reflectionparameter.isdefaultvalueconstant.php
-    given(signature('($a, $b= null, $c= \E_ERROR, $d= Fixture::CONSTANT, $e= CONSTANT, $f= [\E_ERROR], $g= "E_ERROR")'), its('isDefaultValueConstant', [
+    its('isDefaultValueConstant', [
 
       it('raises an exception when called for required parameters', function($params) {
         shouldThrow(\ReflectionException::class, '/Failed to retrieve the default value/', function() use($params) {
-          $params[0]->isDefaultValueConstant();
+          functionParameter(0)->isDefaultValueConstant();
         });
       }),
-
-      it('returns false for null default', function($params) {
-        shouldEqual(false, $params[1]->isDefaultValueConstant());
-      }),
+    ]),
+    given(signature('($a= \E_ERROR, $b= Fixture::CONSTANT, $c= CONSTANT)'), its('isDefaultValueConstant', [
 
       it('returns true for global constants', function($params) {
-        shouldEqual(true, $params[2]->isDefaultValueConstant());
+        shouldEqual(true, $params[0]->isDefaultValueConstant());
       }),
 
       it('returns true for class constants', function($params) {
-        shouldEqual(true, $params[3]->isDefaultValueConstant());
+        shouldEqual(true, $params[1]->isDefaultValueConstant());
       }),
 
       it('returns true for namespace constants', function($params) {
-        shouldEqual(true, $params[4]->isDefaultValueConstant());
+        shouldEqual(true, $params[2]->isDefaultValueConstant());
+      }),
+
+    ])),
+    given(signature('($a= null, $b= true, $c= false, $d= 0, $e= -1.5, $f= [\E_ERROR], $g= "E_ERROR")'), its('isDefaultValueConstant', [
+
+      it('returns false for null default', function($params) {
+        shouldEqual(false, $params[0]->isDefaultValueConstant());
+      }),
+
+      it('returns false for true default', function($params) {
+        shouldEqual(false, $params[1]->isDefaultValueConstant());
+      }),
+
+      it('returns false for false default', function($params) {
+        shouldEqual(false, $params[2]->isDefaultValueConstant());
+      }),
+
+      it('returns false for integer default', function($params) {
+        shouldEqual(false, $params[3]->isDefaultValueConstant());
+      }),
+
+      it('returns false for null default', function($params) {
+        shouldEqual(false, $params[4]->isDefaultValueConstant());
       }),
 
       it('returns false for array default', function($params) {
