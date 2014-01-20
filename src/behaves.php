@@ -318,6 +318,7 @@ namespace {
 
   // {{{ main
   $result= new \behaviour\of\Result();
+  error_reporting(E_ERROR | E_USER_ERROR);
   for ($i= 1, $s= sizeof($argv); $i < $s; $i++) {
     $behaves= require($argv[$i]);
     printf("[%3d%%] Verifying %s: [", $i / $s * 100, $behaves);
@@ -325,6 +326,6 @@ namespace {
     echo "]\n";
     flush();
   }
-  printf("[100%%] Finished running %d verifications\n%s", $i - 1, $result);
+  printf("[100%%] Finished running %d verifications\n%s\n", $i - 1, $result);
   // }}}
 }
