@@ -341,6 +341,28 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
         );
       }),
 
+      it('will include return by reference', function() {
+        $decl= declaration('function &%s() { }');
+        shouldEqual(
+          "Function [ <user> function &{$decl->name} ] {\n".
+          "  @@ ".__FILE__."(21) : eval()'d code 1 - 1\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
+
+      it('will include api documentation', function() {
+        $decl= declaration('/** Documented */ function &%s() { }');
+        shouldEqual(
+          "/** Documented */\n".
+          "Function [ <user> function &{$decl->name} ] {\n".
+          "  @@ ".__FILE__."(21) : eval()'d code 1 - 1\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
+
+
       it('will include parameters', function() {
         $decl= declaration('function %s($a) { }');
         shouldEqual(
@@ -354,6 +376,21 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
           (string)$decl
         );
       }),
+
+      it('internal form', function() {
+        shouldEqual(
+          "Function [ <internal:standard> function strstr ] {\n".
+          "\n".
+          "  - Parameters [3] {\n".
+          "    Parameter #0 [ <required> \$haystack ]\n".
+          "    Parameter #1 [ <required> \$needle ]\n".
+          "    Parameter #2 [ <optional> \$part ]\n".
+          "  }\n".
+          "}\n",
+          (string)newInternal()
+        );
+      }),
+
     ]),
   ]
 ]);
