@@ -384,7 +384,7 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
           "  - Parameters [3] {\n".
           "    Parameter #0 [ <required> \$haystack ]\n".
           "    Parameter #1 [ <required> \$needle ]\n".
-          "    Parameter #2 [ <optional> \$part ]\n".
+          "    Parameter #2 [ <optional> \$before_needle = false ]\n".
           "  }\n".
           "}\n",
           (string)newInternal()
