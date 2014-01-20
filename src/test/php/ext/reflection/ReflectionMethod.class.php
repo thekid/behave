@@ -11,6 +11,14 @@ function newFixture() {
   return new \ReflectionMethod(__NAMESPACE__.'\Fixture::method');
 }
 
+// Helper: Returns ReflectionMethod for a method created dynamically via its declaration
+function declaration($declaration) {
+  static $uniq= 0;
+  $uniq++;
+  eval(sprintf('namespace %s; class Fixture__%d {'.$declaration.'}', __NAMESPACE__, $uniq, 'fixture'));
+  return (new \ReflectionMethod(__NAMESPACE__.'\\Fixture__'.$uniq, 'fixture'));
+}
+
 // @see http://de3.php.net/manual/de/class.reflectionmethod.php
 return new \behaviour\of\TheClass('ReflectionMethod', [
 
@@ -40,5 +48,61 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
     ]),
 
+    // @see http://de3.php.net/manual/de/reflectionfunctionabstract.getnumberofparameters.php
+    its('getNumberOfParameters', [
+      it('return 0 for empty parameter list', function() {
+        shouldEqual(0, declaration('function %s() { }')->getNumberOfParameters());
+      }),
+
+      it('return 1 for one parameter', function() {
+        shouldEqual(1, declaration('function %s($a) { }')->getNumberOfParameters());
+      }),
+
+      it('return 2 for two parameters', function() {
+        shouldEqual(2, declaration('function %s($a, $b) { }')->getNumberOfParameters());
+      }),
+
+      it('return 3 for two required parameters and one optional', function() {
+        shouldEqual(3, declaration('function %s($a, $b, $c= null) { }')->getNumberOfParameters());
+      }),
+    ]),
+
+    // @see http://de3.php.net/manual/de/reflectionfunctionabstract.getParameters.php
+    its('getParameters', [
+      it('return an empty array for an empty parameter list', function() {
+        shouldEqual([], declaration('function %s() { }')->getParameters());
+      }),
+
+      it('return a ReflectionParameter instance for a single parameter', function() {
+        shouldBe([\ReflectionParameter::class], declaration('function %s($a) { }')->getParameters());
+      }),
+
+      it('return a non-empty array of ReflectionParameter instances', function() {
+        shouldBe([\ReflectionParameter::class, \ReflectionParameter::class], declaration('function %s($a, $b) { }')->getParameters());
+      }),
+    ]),
+
+    // @see http://de3.php.net/manual/de/reflectionfunctionabstract.getnumberofrequiredparameters.php
+    its('getNumberOfRequiredParameters', [
+      it('return 0 for empty parameter list', function() {
+        shouldEqual(0, declaration('function %s() { }')->getNumberOfRequiredParameters());
+      }),
+
+      it('return 1 for one parameter', function() {
+        shouldEqual(1, declaration('function %s($a) { }')->getNumberOfRequiredParameters());
+      }),
+
+      it('return 0 for one optional parameter', function() {
+        shouldEqual(0, declaration('function %s($a= null) { }')->getNumberOfRequiredParameters());
+      }),
+
+      it('return 2 for two parameters', function() {
+        shouldEqual(2, declaration('function %s($a, $b) { }')->getNumberOfRequiredParameters());
+      }),
+
+      it('return 2 for two required parameters and one optional', function() {
+        shouldEqual(2, declaration('function %s($a, $b, $c= null) { }')->getNumberOfRequiredParameters());
+      }),
+    ]),
   ]
 ]);
