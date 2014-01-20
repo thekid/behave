@@ -329,7 +329,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     skip('isDefaultValueConstant does not exist')->given(signature('($a, $b= null, $c= /**Fixture::*/CONSTANT)'), its('isDefaultValueConstant', [
 
       it('raises an exception when called for required parameters', function($params) {
-        shouldThrow('ReflectionException', '/Failed to retrieve the default value/', function() use($params) {
+        shouldThrow('ReflectionException', '/Parameter is not optional/', function() use($params) {
           $params[0]->isDefaultValueConstant();
         });
       }),
@@ -347,7 +347,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     given(signature('($a, $b= null, $c= Fixture::CONSTANT, $d= [1, 2, 3])'), its('getDefaultValue', [
 
       it('raises an exception when called for required parameters', function($params) {
-        shouldThrow('ReflectionException', '/Failed to retrieve the default value/', function() use($params) {
+        shouldThrow('ReflectionException', '/Parameter is not optional/', function() use($params) {
           $params[0]->getDefaultValue();
         });
       }),
