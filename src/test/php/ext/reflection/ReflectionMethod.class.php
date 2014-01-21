@@ -284,11 +284,11 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
 
       it('returns a closure', function() {
-        shouldBe(\Closure::class, newFixture('method')->getClosure(new Fixture()));
+        shouldBe('Closure', newFixture('method')->getClosure(new Fixture()));
       }),
 
       it('throws an exception when an incorrect object is passed', function() {
-        shouldThrow(\ReflectionException::class, '/Given object is not an instance of the class/', function() {
+        shouldThrow('ReflectionException', '/Given object is not an instance of the class/', function() {
           newFixture('method')->getClosure(new \stdClass());
         });
       }),
