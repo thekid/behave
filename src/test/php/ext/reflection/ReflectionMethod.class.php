@@ -308,5 +308,12 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
         shouldEqual(Fixture::valueOf('test'), $f('test'));
       }),
     ]),
+
+    // @see https://github.com/facebook/hhvm/issues/1357
+    given(declaration('function %s($a, $b = null, $c) { }'), its('getNumberOfRequiredParameters', [
+      it('regard all three as required parameters', function($decl) {
+        shouldEqual(3, $decl->getNumberOfRequiredParameters());
+      }),
+    ])),
   ]
 ]);
