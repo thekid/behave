@@ -8,7 +8,7 @@ abstract class Base {
   protected abstract function value();
 }
 class Fixture extends Base {
-  public function method() { }
+  public function method() { return true; }
   private function internal() { }
   protected function value() { }
 }
@@ -271,6 +271,32 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
 
       it('returns true for protected abstract methods', function() {
         shouldEqual(true, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'value'))->isAbstract());
+      }),
+    ]),
+
+    // @see http://de3.php.net/manual/de/reflectionmethod.getclosure.php
+    its('getClosure', [
+
+      it('raises a warning when invoked without arguments', function() {
+        shouldRaise('/expects exactly 1 parameter, 0 given/', function() {
+          newFixture('method')->getClosure();
+        });
+      }),
+
+      it('returns a closure', function() {
+        shouldBe(\Closure::class, newFixture('method')->getClosure(new Fixture()));
+      }),
+
+      it('throws an exception when an incorrect object is passed', function() {
+        shouldThrow(\ReflectionException::class, '/Given object is not an instance of the class/', function() {
+          newFixture('method')->getClosure(new \stdClass());
+        });
+      }),
+
+      it('will be invokeable and return whatever the method returns', function() {
+        $instance= new Fixture();
+        $f= newFixture('method')->getClosure($instance);
+        shouldEqual($instance->method(), $f());
       }),
     ]),
   ]
