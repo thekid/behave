@@ -278,7 +278,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
     its('getClosure', [
 
       it('raises a warning when invoked without arguments', function() {
-        shouldRaise('/expects exactly 1 parameter, 0 given/', function() {
+        shouldRaise('/Undefined variable: object/', function() {
           newFixture('method')->getClosure();
         });
       }),
