@@ -3,7 +3,7 @@
 // Fixtures
 abstract class Base {
   protected function inherited() { }
-  public static function valueOf() { }
+  public static function valueOf($in) { return ['in' => $in]; }
   private final function values() { }
   protected abstract function value();
 }
@@ -287,6 +287,10 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
         shouldBe(\Closure::class, newFixture('method')->getClosure(new Fixture()));
       }),
 
+      it('returns a closure for static methods', function() {
+        shouldBe(\Closure::class, newFixture('valueOf')->getClosure(null));
+      }),
+
       it('throws an exception when an incorrect object is passed', function() {
         shouldThrow(\ReflectionException::class, '/Given object is not an instance of the class/', function() {
           newFixture('method')->getClosure(new \stdClass());
@@ -297,6 +301,11 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
         $instance= new Fixture();
         $f= newFixture('method')->getClosure($instance);
         shouldEqual($instance->method(), $f());
+      }),
+
+      it('will be invokeable and return whatever the static method returns', function() {
+        $f= newFixture('valueOf')->getClosure(null);
+        shouldEqual(Fixture::valueOf('test'), $f('test'));
       }),
     ]),
   ]
