@@ -278,7 +278,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
     its('getClosure', [
 
       it('raises a warning when invoked without arguments', function() {
-        shouldRaise('/Undefined variable: object/', function() {
+        shouldThrow('ReflectionException', '/Given object is not an instance of the class/', function() {
           newFixture('method')->getClosure();
         });
       }),
