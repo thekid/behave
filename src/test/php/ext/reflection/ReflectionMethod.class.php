@@ -288,7 +288,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
 
       it('returns a closure for static methods', function() {
-        shouldBe(\Closure::class, newFixture('valueOf')->getClosure(null));
+        shouldBe('Closure', newFixture('valueOf')->getClosure(null));
       }),
 
       it('throws an exception when an incorrect object is passed', function() {
