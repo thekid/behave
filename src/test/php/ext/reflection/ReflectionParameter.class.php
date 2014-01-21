@@ -469,5 +469,16 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
         shouldEqual('Parameter #5 [ <optional> $f = NULL ]', (string)$params[5]);
       }),
     ])),
+
+    // @see https://github.com/facebook/hhvm/issues/1357
+    given(signature('($a, $b = null, $c)'), its('isOptional', [
+      it('should be consistent with PHP', function($params) {
+        shouldEqual([false, false, false], [
+          $params[0]->isOptional(),
+          $params[1]->isOptional(),
+          $params[2]->isOptional()
+        ]);
+      }),
+    ])),
   ]
 ]);
