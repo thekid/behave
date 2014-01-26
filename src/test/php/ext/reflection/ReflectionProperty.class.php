@@ -152,6 +152,23 @@ return new \behaviour\of\TheClass('ReflectionProperty', [
       }),
     ]),
 
+    // @see http://de3.php.net/manual/de/reflectionproperty.isdefault.php
+    its('isDefault', [
+      it('will return true for a declared public field', function() {
+        shouldEqual(true, fixtureField('field')->isDefault());
+      }),
+
+      it('will return true for a declared static field', function() {
+        shouldEqual(true, fixtureField('EMPTY')->isDefault());
+      }),
+
+      it('will return false for a runtime-added field', function() {
+        $class= new \stdClass();
+        $class->runtime = true;
+        shouldEqual(false, (new \ReflectionProperty($class, 'runtime'))->isDefault());
+      }),
+    ]),
+
     // @see http://de3.php.net/manual/de/reflectionproperty.getdoccomment.php
     its('getDocComment', [
       it('returns false for fields without doc comment', function() {
