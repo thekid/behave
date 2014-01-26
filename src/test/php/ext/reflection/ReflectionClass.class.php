@@ -712,6 +712,42 @@ return new \behaviour\of\TheClass('ReflectionClass', [
           (string)$decl
         );
       }),
+
+      it('contains constants', function() {
+        $decl= declaration('class %s {
+          const A = -1;
+          const B = "Test";
+          const C = true;
+          const D = null;
+          const E = 6.1;
+        }');
+        shouldEqual(
+          "Class [ <user> class {$decl->name} ] {\n".
+          "  @@ ".__FILE__."(28) : eval()'d code 1-7\n".
+          "\n".
+          "  - Constants [5] {\n".
+          "    Constant [ integer A ] { -1 }\n".
+          "    Constant [ string B ] { Test }\n".
+          "    Constant [ boolean C ] { 1 }\n".
+          "    Constant [ null D ] {  }\n".
+          "    Constant [ double E ] { 6.1 }\n".
+          "  }\n".
+          "\n".
+          "  - Static properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static methods [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Methods [0] {\n".
+          "  }\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
     ])
   ]
 ]);
