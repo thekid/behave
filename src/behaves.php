@@ -318,7 +318,7 @@ namespace {
 
   // {{{ main
   $result= new \behaviour\of\Result();
-  error_reporting(E_ERROR | E_USER_ERROR);
+  error_reporting(E_ERROR | E_USER_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_PARSE);
   for ($i= 1, $s= sizeof($argv); $i < $s; $i++) {
     $behaves= require($argv[$i]);
     printf("[%3d%%] Verifying %s: [", $i / $s * 100, $behaves);
