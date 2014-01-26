@@ -19,10 +19,10 @@ function newFixture($name) {
 }
 
 // Helper: Returns ReflectionMethod for a method created dynamically via its declaration
-function declaration($declaration) {
+function declaration($declaration, $modifiers= '') {
   static $uniq= 0;
   $uniq++;
-  eval(sprintf('namespace %s; class Fixture__%d {'.$declaration.'}', __NAMESPACE__, $uniq, 'fixture'));
+  eval(sprintf('namespace %s; %s class Fixture__%d {'.$declaration.'}', __NAMESPACE__, $modifiers, $uniq, 'fixture'));
   return (new \ReflectionMethod(__NAMESPACE__.'\\Fixture__'.$uniq, 'fixture'));
 }
 
@@ -323,5 +323,76 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
         shouldEqual(3, $decl->getNumberOfRequiredParameters());
       }),
     ])),
+
+    its('string casting', [
+      it('simplest form', function() {
+        shouldEqual(
+          "Method [ <user> public method fixture ] {\n".
+          "  @@ ".__FILE__."(25) : eval()'d code 1 - 1\n".
+          "}\n",
+          (string)declaration('function %s() { }')
+        );
+      }),
+
+      it('abstract form', ['abstract public', 'abstract protected'], function($modifiers) {
+        shouldEqual(
+          "Method [ <user> {$modifiers} method fixture ] {\n".
+          "  @@ ".__FILE__."(25) : eval()'d code 1 - 1\n".
+          "}\n",
+          (string)declaration($modifiers.' function %s();', 'abstract')
+        );
+      }),
+
+      it('final form', ['final public', 'final protected', 'final private'], function($modifiers) {
+        shouldEqual(
+          "Method [ <user> {$modifiers} method fixture ] {\n".
+          "  @@ ".__FILE__."(25) : eval()'d code 1 - 1\n".
+          "}\n",
+          (string)declaration($modifiers.' function %s() { }')
+        );
+      }),
+
+      it('will include modifiers', ['private', 'protected', 'public'], function($modifiers) {
+        shouldEqual(
+          "Method [ <user> {$modifiers} method fixture ] {\n".
+          "  @@ ".__FILE__."(25) : eval()'d code 1 - 1\n".
+          "}\n",
+          (string)declaration($modifiers.' function %s() { }')
+        );
+      }),
+
+      it('will include return by reference', function() {
+        shouldEqual(
+          "Method [ <user> public method &fixture ] {\n".
+          "  @@ ".__FILE__."(25) : eval()'d code 1 - 1\n".
+          "}\n",
+          (string)declaration('function &%s() { }')
+        );
+      }),
+
+      it('will include api documentation', function() {
+        shouldEqual(
+          "/** Documented */\n".
+          "Method [ <user> public method fixture ] {\n".
+          "  @@ ".__FILE__."(25) : eval()'d code 1 - 1\n".
+          "}\n",
+          (string)declaration('/** Documented */ function %s() { }')
+        );
+      }),
+
+      it('will include parameters', function() {
+        $decl= declaration('function %s($a) { }');
+        shouldEqual(
+          "Method [ <user> public method fixture ] {\n".
+          "  @@ ".__FILE__."(25) : eval()'d code 1 - 1\n".
+          "\n".
+          "  - Parameters [1] {\n".
+          "    ".$decl->getParameters()[0]."\n".
+          "  }\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
+    ])
   ]
 ]);
