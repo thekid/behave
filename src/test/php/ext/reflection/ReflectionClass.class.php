@@ -636,5 +636,82 @@ return new \behaviour\of\TheClass('ReflectionClass', [
     it('Has a cloning implementation', function() {
       shouldEqual(true, method_exists('ReflectionClass', '__clone'));
     }),
+
+    its('string casting', [
+      it('representation of an empty class', function() {
+        $decl= declaration('class %s { }');
+        shouldEqual(
+          "Class [ <user> class {$decl->name} ] {\n".
+          "  @@ ".__FILE__."(28) : eval()'d code 1-1\n".
+          "\n".
+          "  - Constants [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static methods [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Methods [0] {\n".
+          "  }\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
+
+      it('representation of an empty interface', function() {
+        $decl= declaration('interface %s { }');
+        shouldEqual(
+          "Interface [ <user> interface {$decl->name} ] {\n".
+          "  @@ ".__FILE__."(28) : eval()'d code 1-1\n".
+          "\n".
+          "  - Constants [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static methods [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Methods [0] {\n".
+          "  }\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
+
+      it('representation of an empty trait', function() {
+        $decl= declaration('trait %s { }');
+        shouldEqual(
+          "Trait [ <user> trait {$decl->name} ] {\n".
+          "  @@ ".__FILE__."(28) : eval()'d code 1-1\n".
+          "\n".
+          "  - Constants [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static methods [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Methods [0] {\n".
+          "  }\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
+    ])
   ]
 ]);
