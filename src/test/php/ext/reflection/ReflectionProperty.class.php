@@ -76,6 +76,99 @@ return new \behaviour\of\TheClass('ReflectionProperty', [
       }),
     ]),
 
+    // @see http://de3.php.net/manual/de/reflectionproperty.ispublic.php
+    its('isPublic', [
+      it('will return true for public', function() {
+        shouldEqual(true, fixtureField('field')->isPublic());
+      }),
+
+      it('will return false for protected', function() {
+        shouldEqual(false, fixtureField('inherited')->isPublic());
+      }),
+
+      it('will return false for private', function() {
+        shouldEqual(false, fixtureField('internal')->isPublic());
+      }),
+
+      it('will return true for public static', function() {
+        shouldEqual(true, fixtureField('EMPTY')->isPublic());
+      }),
+    ]),
+
+    // @see http://de3.php.net/manual/de/reflectionproperty.isprotected.php
+    its('isProtected', [
+      it('will return false for public', function() {
+        shouldEqual(false, fixtureField('field')->isProtected());
+      }),
+
+      it('will return true for protected', function() {
+        shouldEqual(true, fixtureField('inherited')->isProtected());
+      }),
+
+      it('will return false for private', function() {
+        shouldEqual(false, fixtureField('internal')->isProtected());
+      }),
+
+      it('will return false for public static', function() {
+        shouldEqual(false, fixtureField('EMPTY')->isProtected());
+      }),
+    ]),
+
+    // @see http://de3.php.net/manual/de/reflectionproperty.isprivate.php
+    its('isPrivate', [
+      it('will return false for public', function() {
+        shouldEqual(false, fixtureField('field')->isPrivate());
+      }),
+
+      it('will return false for protected', function() {
+        shouldEqual(false, fixtureField('inherited')->isPrivate());
+      }),
+
+      it('will return true for private', function() {
+        shouldEqual(true, fixtureField('internal')->isPrivate());
+      }),
+
+      it('will return false for public static', function() {
+        shouldEqual(false, fixtureField('EMPTY')->isPrivate());
+      }),
+    ]),
+
+    // @see http://de3.php.net/manual/de/reflectionproperty.isstatic.php
+    its('isStatic', [
+      it('will return false for public', function() {
+        shouldEqual(false, fixtureField('field')->isStatic());
+      }),
+
+      it('will return false for protected', function() {
+        shouldEqual(false, fixtureField('inherited')->isStatic());
+      }),
+
+      it('will return false for private', function() {
+        shouldEqual(false, fixtureField('internal')->isStatic());
+      }),
+
+      it('will return true for public static', function() {
+        shouldEqual(true, fixtureField('EMPTY')->isStatic());
+      }),
+    ]),
+
+    // @see http://de3.php.net/manual/de/reflectionproperty.isdefault.php
+    its('isDefault', [
+      it('will return true for a declared public field', function() {
+        shouldEqual(true, fixtureField('field')->isDefault());
+      }),
+
+      it('will return true for a declared static field', function() {
+        shouldEqual(true, fixtureField('EMPTY')->isDefault());
+      }),
+
+      it('will return false for a runtime-added field', function() {
+        $class= new \stdClass();
+        $class->runtime = true;
+        shouldEqual(false, (new \ReflectionProperty($class, 'runtime'))->isDefault());
+      }),
+    ]),
+
     // @see http://de3.php.net/manual/de/reflectionproperty.getdoccomment.php
     its('getDocComment', [
       it('returns false for fields without doc comment', function() {
