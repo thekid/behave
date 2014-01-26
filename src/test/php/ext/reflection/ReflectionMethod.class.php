@@ -5,12 +5,12 @@ abstract class Base {
   protected function inherited() { }
   public static function valueOf($in) { return ['in' => $in]; }
   private final function values() { }
-  protected abstract function value();
+  protected abstract function value($offset);
 }
 class Fixture extends Base {
   public function method() { return true; }
   private function internal() { }
-  protected function value() { }
+  protected function value($index) { }
 }
 
 // Helper: Returns a new ReflectionMethod for the fixture's method()
@@ -74,7 +74,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
     ]),
 
-    // @see http://de3.php.net/manual/de/reflectionfunctionabstract.getParameters.php
+    // @see http://de3.php.net/manual/de/reflectionfunctionabstract.getparameters.php
     its('getParameters', [
       it('returns an empty array for an empty parameter list', function() {
         shouldEqual([], declaration('function %s() { }')->getParameters());
@@ -86,6 +86,14 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
 
       it('returns a non-empty array of ReflectionParameter instances', function() {
         shouldBe([\ReflectionParameter::class, \ReflectionParameter::class], declaration('function %s($a, $b) { }')->getParameters());
+      }),
+
+      it('parameter\'s name from base class', function() {
+        shouldEqual('offset', (new \ReflectionMethod(Base::class, 'value'))->getParameters()[0]->name);
+      }),
+
+      it('parameter\'s name matches declaration when overwritten from base class', function() {
+        shouldEqual('index', (new \ReflectionMethod(Fixture::class, 'value'))->getParameters()[0]->name);
       }),
     ]),
 
