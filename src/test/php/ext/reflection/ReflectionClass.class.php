@@ -748,6 +748,34 @@ return new \behaviour\of\TheClass('ReflectionClass', [
           (string)$decl
         );
       }),
+
+      it('contains static properties', function() {
+        $decl= declaration('class %s {
+          static $A = -1;
+        }');
+        shouldEqual(
+          "Class [ <user> class {$decl->name} ] {\n".
+          "  @@ ".__FILE__."(28) : eval()'d code 1-7\n".
+          "\n".
+          "  - Constants [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static properties [0] {\n".
+          "    ".
+          "  }\n".
+          "\n".
+          "  - Static methods [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Methods [0] {\n".
+          "  }\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
     ])
   ]
 ]);
