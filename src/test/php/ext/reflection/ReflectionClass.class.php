@@ -807,6 +807,36 @@ return new \behaviour\of\TheClass('ReflectionClass', [
           (string)$decl
         );
       }),
+
+      it('contains default properties', function() {
+        $decl= declaration('class %s {
+          public $id = 0;
+          private $name;
+        }');
+        shouldEqual(
+          "Class [ <user> class {$decl->name} ] {\n".
+          "  @@ ".__FILE__."(28) : eval()'d code 1-4\n".
+          "\n".
+          "  - Constants [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static methods [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Properties [2] {\n".
+          "    Property [ <default> public \$id ]\n".
+          "    Property [ <default> private \$name ]\n".
+          "  }\n".
+          "\n".
+          "  - Methods [0] {\n".
+          "  }\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
     ])
   ]
 ]);
