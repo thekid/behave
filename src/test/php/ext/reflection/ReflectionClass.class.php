@@ -711,6 +711,161 @@ return new \behaviour\of\TheClass('ReflectionClass', [
           (string)$decl
         );
       }),
+
+      it('contains constants', function() {
+        $decl= declaration('class %s {
+          const A = -1;
+          const B = "Test";
+          const C = true;
+          const D = null;
+          const E = 6.1;
+        }');
+        shouldEqual(
+          "Class [ <user> class {$decl->name} ] {\n".
+          "  @@ ".__FILE__."(28) : eval()'d code 1-7\n".
+          "\n".
+          "  - Constants [5] {\n".
+          "    Constant [ integer A ] { -1 }\n".
+          "    Constant [ string B ] { Test }\n".
+          "    Constant [ boolean C ] { 1 }\n".
+          "    Constant [ null D ] {  }\n".
+          "    Constant [ double E ] { 6.1 }\n".
+          "  }\n".
+          "\n".
+          "  - Static properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static methods [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Methods [0] {\n".
+          "  }\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
+
+      it('contains static properties', function() {
+        $decl= declaration('class %s {
+          static $EMPTY, $instance;
+        }');
+        shouldEqual(
+          "Class [ <user> class {$decl->name} ] {\n".
+          "  @@ ".__FILE__."(28) : eval()'d code 1-3\n".
+          "\n".
+          "  - Constants [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static properties [2] {\n".
+          "    Property [ public static \$EMPTY ]\n".
+          "    Property [ public static \$instance ]\n".
+          "  }\n".
+          "\n".
+          "  - Static methods [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Methods [0] {\n".
+          "  }\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
+
+      it('contains static methods', function() {
+        $decl= declaration('class %s {
+          static function getInstance() { /* ... */ }
+        }');
+        shouldEqual(
+          "Class [ <user> class {$decl->name} ] {\n".
+          "  @@ ".__FILE__."(28) : eval()'d code 1-3\n".
+          "\n".
+          "  - Constants [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static methods [1] {\n".
+          "    Method [ <user> static public method getInstance ] {\n".
+          "      @@ ".__FILE__."(28) : eval()'d code 2 - 2\n".
+          "    }\n".
+          "  }\n".
+          "\n".
+          "  - Properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Methods [0] {\n".
+          "  }\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
+
+      it('contains default properties', function() {
+        $decl= declaration('class %s {
+          public $id = 0;
+          private $name;
+        }');
+        shouldEqual(
+          "Class [ <user> class {$decl->name} ] {\n".
+          "  @@ ".__FILE__."(28) : eval()'d code 1-4\n".
+          "\n".
+          "  - Constants [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static methods [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Properties [2] {\n".
+          "    Property [ <default> public \$id ]\n".
+          "    Property [ <default> private \$name ]\n".
+          "  }\n".
+          "\n".
+          "  - Methods [0] {\n".
+          "  }\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
+
+      it('contains methods', function() {
+        $decl= declaration('class %s {
+          public function getName() { /* ... */ }
+        }');
+        shouldEqual(
+          "Class [ <user> class {$decl->name} ] {\n".
+          "  @@ ".__FILE__."(28) : eval()'d code 1-3\n".
+          "\n".
+          "  - Constants [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static methods [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Methods [1] {\n".
+          "    Method [ <user> public method getName ] {\n".
+          "      @@ ".__FILE__."(28) : eval()'d code 2 - 2\n".
+          "    }\n".
+          "  }\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
     ])
   ]
 ]);
