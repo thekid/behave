@@ -777,6 +777,36 @@ return new \behaviour\of\TheClass('ReflectionClass', [
           (string)$decl
         );
       }),
+
+      it('contains static methods', function() {
+        $decl= declaration('class %s {
+          static function getInstance() { /* ... */ }
+        }');
+        shouldEqual(
+          "Class [ <user> class {$decl->name} ] {\n".
+          "  @@ ".__FILE__."(28) : eval()'d code 1-3\n".
+          "\n".
+          "  - Constants [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Static methods [1] {\n".
+          "    Method [ <user> static public method getInstance ] {\n".
+          "      @@ ".__FILE__."(28) : eval()'d code 2 - 2\n".
+          "    }\n".
+          "  }\n".
+          "\n".
+          "  - Properties [0] {\n".
+          "  }\n".
+          "\n".
+          "  - Methods [0] {\n".
+          "  }\n".
+          "}\n",
+          (string)$decl
+        );
+      }),
     ])
   ]
 ]);
