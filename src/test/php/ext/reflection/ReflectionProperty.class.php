@@ -91,5 +91,42 @@ return new \behaviour\of\TheClass('ReflectionProperty', [
     it('Has a cloning implementation', function() {
       shouldEqual(true, method_exists('ReflectionProperty', '__clone'));
     }),
+
+    its('string casting', [
+      it('public form', function() {
+        shouldEqual(
+          "Property [ <default> public \$field ]\n",
+          (string)fixtureField('field')
+        );
+      }),
+
+      it('protected form', function() {
+        shouldEqual(
+          "Property [ <default> protected \$inherited ]\n",
+          (string)fixtureField('inherited')
+        );
+      }),
+
+      it('private form', function() {
+        shouldEqual(
+          "Property [ <default> private \$internal ]\n",
+          (string)fixtureField('internal')
+        );
+      }),
+
+      it('public static form', function() {
+        shouldEqual(
+          "Property [ public static \$EMPTY ]\n",
+          (string)fixtureField('EMPTY')
+        );
+      }),
+
+      it('will NOT include api documentation', function() {
+        shouldEqual(
+          "Property [ private static \$documented ]\n",
+          (string)fixtureField('documented')
+        );
+      }),
+    ])
   ]
 ]);
