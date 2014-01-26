@@ -100,25 +100,25 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     }),
 
     it('raises an exception for unknown offsets', [-1, 2], function($offset) {
-      shouldThrow('ReflectionException', '/The parameter specified by its offset could not be found/', function() use($offset) {
+      shouldThrow('ReflectionException', "/The parameter specified by its offset #$offset could not be found/", function() use($offset) {
         functionParameter($offset);
       });
     }),
 
     it('raises an exception for unknown names', [null, '', '__non-existant__'], function($name) {
-      shouldThrow('ReflectionException', '/The parameter specified by its name could not be found/', function() use($name) {
+      shouldThrow('ReflectionException', "/The parameter specified by its name '$name' could not be found/", function() use($name) {
         functionParameter($name);
       });
     }),
 
     it('is not case-insensitive', function() {
-      shouldThrow('ReflectionException', '/The parameter specified by its name could not be found/', function() {
+      shouldThrow('ReflectionException', "/The parameter specified by its name 'PARAM' could not be found/", function() {
         functionParameter('PARAM');
       });
     }),
 
     it('handles all other types as names', [true, false, -0.5, [], [1, 2, 3], ['hello' => 'world']], function($name) {
-      shouldThrow('ReflectionException', '/The parameter specified by its name could not be found/', function() use($name) {
+      shouldThrow('ReflectionException', "/The parameter specified by its name '.+' could not be found/", function() use($name) {
         functionParameter($name);
       });
     }),
