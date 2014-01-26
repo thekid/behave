@@ -118,7 +118,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     }),
 
     it('handles all other types as names', [true, false, -0.5, [], [1, 2, 3], ['hello' => 'world']], function($name) {
-      shouldThrow('ReflectionException', "/The parameter specified by its name '.+' could not be found/", function() use($name) {
+      shouldThrow('ReflectionException', "/The parameter specified by its name '.*' could not be found/", function() use($name) {
         functionParameter($name);
       });
     }),
