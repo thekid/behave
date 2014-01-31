@@ -193,6 +193,11 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
       it('returns ReflectionClass instance for parameters typehinted with "parent"', function() {
         shouldEqual(__NAMESPACE__.'\Base', methodParameter('copyOf', 0)->getClass()->name);
       }),
+
+      // @see https://github.com/facebook/hhvm/issues/1665
+      it('does not throw exceptions for primitive types', function() {
+        shouldEqual(null, (new \ReflectionClass('ReflectionMethod'))->getMethod('setAccessible')->getParameters()[0]->getClass());
+      }),
     ]),
 
     // @see http://de3.php.net/manual/de/reflectionparameter.allowsnull.php
