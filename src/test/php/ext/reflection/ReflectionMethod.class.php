@@ -3,6 +3,8 @@
 // Fixtures
 abstract class Base {
   protected function inherited() { }
+  public static function clazz() { return get_called_class(); }
+  public function getClass() { return get_class($this); }
   public static function valueOf($in) { return ['in' => $in]; }
   private final function values() { }
   protected abstract function value($offset);
@@ -329,6 +331,15 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
         shouldEqual('Test', $decl->invoke(null));
       }),
 
+      // @see https://github.com/facebook/hhvm/issues/1728
+      it('will invoke methods on the correct instance', function() {
+        shouldEqual(Fixture::class, newFixture('getClass')->invoke(new Fixture()));
+      }),
+
+      it('will invoke static methods on the correct instance', function() {
+        shouldEqual(Fixture::class, newFixture('clazz')->invoke(null));
+      }),
+
       // @see https://github.com/facebook/hhvm/issues/1721
       it('will invoke static methods with an object', function() {
         $decl= declaration('static function %s() { return "Test"; }');
@@ -387,6 +398,15 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       it('will invoke static methods', function() {
         $decl= declaration('static function %s() { return "Test"; }');
         shouldEqual('Test', $decl->invokeArgs(null, []));
+      }),
+
+      // @see https://github.com/facebook/hhvm/issues/1728
+      it('will invoke methods on the correct instance', function() {
+        shouldEqual(Fixture::class, newFixture('getClass')->invokeArgs(new Fixture(), []));
+      }),
+
+      it('will invoke static methods on the correct instance', function() {
+        shouldEqual(Fixture::class, newFixture('clazz')->invokeArgs(null, []));
       }),
 
       // @see https://github.com/facebook/hhvm/issues/1721
@@ -450,7 +470,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       it('simplest form', function() {
         shouldEqual(
           "Method [ <user> public method fixture ] {\n".
-          "  @@ ".__FILE__."(25) : eval()'d code 1 - 1\n".
+          "  @@ ".__FILE__."(27) : eval()'d code 1 - 1\n".
           "}\n",
           (string)declaration('function %s() { }')
         );
@@ -459,7 +479,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       it('abstract form', ['abstract public', 'abstract protected'], function($modifiers) {
         shouldEqual(
           "Method [ <user> {$modifiers} method fixture ] {\n".
-          "  @@ ".__FILE__."(25) : eval()'d code 1 - 1\n".
+          "  @@ ".__FILE__."(27) : eval()'d code 1 - 1\n".
           "}\n",
           (string)declaration($modifiers.' function %s();', 'abstract')
         );
@@ -468,7 +488,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       it('final form', ['final public', 'final protected', 'final private'], function($modifiers) {
         shouldEqual(
           "Method [ <user> {$modifiers} method fixture ] {\n".
-          "  @@ ".__FILE__."(25) : eval()'d code 1 - 1\n".
+          "  @@ ".__FILE__."(27) : eval()'d code 1 - 1\n".
           "}\n",
           (string)declaration($modifiers.' function %s() { }')
         );
@@ -477,7 +497,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       it('will include modifiers', ['private', 'protected', 'public'], function($modifiers) {
         shouldEqual(
           "Method [ <user> {$modifiers} method fixture ] {\n".
-          "  @@ ".__FILE__."(25) : eval()'d code 1 - 1\n".
+          "  @@ ".__FILE__."(27) : eval()'d code 1 - 1\n".
           "}\n",
           (string)declaration($modifiers.' function %s() { }')
         );
@@ -486,7 +506,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       it('will include return by reference', function() {
         shouldEqual(
           "Method [ <user> public method &fixture ] {\n".
-          "  @@ ".__FILE__."(25) : eval()'d code 1 - 1\n".
+          "  @@ ".__FILE__."(27) : eval()'d code 1 - 1\n".
           "}\n",
           (string)declaration('function &%s() { }')
         );
@@ -496,7 +516,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
         shouldEqual(
           "/** Documented */\n".
           "Method [ <user> public method fixture ] {\n".
-          "  @@ ".__FILE__."(25) : eval()'d code 1 - 1\n".
+          "  @@ ".__FILE__."(27) : eval()'d code 1 - 1\n".
           "}\n",
           (string)declaration('/** Documented */ function %s() { }')
         );
@@ -506,7 +526,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
         $decl= declaration('function %s($a) { }');
         shouldEqual(
           "Method [ <user> public method fixture ] {\n".
-          "  @@ ".__FILE__."(25) : eval()'d code 1 - 1\n".
+          "  @@ ".__FILE__."(27) : eval()'d code 1 - 1\n".
           "\n".
           "  - Parameters [1] {\n".
           "    ".$decl->getParameters()[0]."\n".
