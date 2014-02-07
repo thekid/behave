@@ -165,7 +165,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
       }),
 
       it('returns the declaring function', function() {
-        shouldEqual(__NAMESPACE__.'\\fixture', functionParameter(0)->getDeclaringFunction()->name);
+        shouldEqual(__NAMESPACE__.'\fixture', functionParameter(0)->getDeclaringFunction()->name);
       }),
     ]),
 
