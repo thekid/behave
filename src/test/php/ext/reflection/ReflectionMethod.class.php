@@ -321,27 +321,34 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
     its('invoke', [
       it('will invoke no-arg methods', function() {
         $decl= declaration('public function %s() { return "Test"; }');
-        $instance= $decl->getDeclaringClass()->newInstance();
-        shouldEqual('Test', $decl->invoke($instance));
+        shouldEqual('Test', $decl->invoke($decl->getDeclaringClass()->newInstance()));
+      }),
+
+      it('will invoke static methods', function() {
+        $decl= declaration('static function %s() { return "Test"; }');
+        shouldEqual('Test', $decl->invoke(null));
+      }),
+
+      // @see https://github.com/facebook/hhvm/issues/1721
+      it('will invoke static methods with an object', function() {
+        $decl= declaration('static function %s() { return "Test"; }');
+        shouldEqual('Test', $decl->invoke($decl->getDeclaringClass()->newInstance()));
       }),
 
       it('will pass a given argument to the method', function() {
         $decl= declaration('public function %s($arg) { return $arg; }');
-        $instance= $decl->getDeclaringClass()->newInstance();
-        shouldEqual('Test', $decl->invoke($instance, 'Test'));
+        shouldEqual('Test', $decl->invoke($decl->getDeclaringClass()->newInstance(), 'Test'));
       }),
 
       it('will pass given arguments to the method', function() {
         $decl= declaration('public function %s($a, $b) { return [$a, $b]; }');
-        $instance= $decl->getDeclaringClass()->newInstance();
-        shouldEqual([1, 2], $decl->invoke($instance, 1, 2));
+        shouldEqual([1, 2], $decl->invoke($decl->getDeclaringClass()->newInstance(), 1, 2));
       }),
 
       it('will raise an exception when trying to invoke non-public methods', ['private', 'protected'], function($modifier) {
         shouldThrow(\ReflectionException::class, '/Trying to invoke '.$modifier.' method/', function() use($modifier) {
           $decl= declaration($modifier.' function %s() { }');
-          $instance= $decl->getDeclaringClass()->newInstance();
-          $decl->invoke($instance);
+          $decl->invoke($decl->getDeclaringClass()->newInstance());
         });
       }),
 
@@ -357,10 +364,15 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
         });
       }),
 
-      it('will raise an exception when trying to invoke instance methods with non-compatible instance', function() {
+      it('will raise an exception when trying to invoke instance methods with incompatible instances', function() {
         shouldThrow(\ReflectionException::class, '/Given object is not an instance/', function() {
           declaration('public function %s() { }')->invoke(new \stdClass());
         });
+      }),
+
+      it('will invoke static methods even with incompatible instances', function() {
+        $decl= declaration('static function %s() { return "Test"; }');
+        shouldEqual('Test', $decl->invoke(new \stdClass()));
       }),
     ]),
 
@@ -370,6 +382,17 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
         $decl= declaration('public function %s() { return "Test"; }');
         $instance= $decl->getDeclaringClass()->newInstance();
         shouldEqual('Test', $decl->invokeArgs($instance, []));
+      }),
+
+      it('will invoke static methods', function() {
+        $decl= declaration('static function %s() { return "Test"; }');
+        shouldEqual('Test', $decl->invokeArgs(null, []));
+      }),
+
+      // @see https://github.com/facebook/hhvm/issues/1721
+      it('will invoke static methods with an object', function() {
+        $decl= declaration('static function %s() { return "Test"; }');
+        shouldEqual('Test', $decl->invokeArgs($decl->getDeclaringClass()->newInstance(), []));
       }),
 
       it('will pass a given argument to the method', function() {
@@ -408,6 +431,11 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
         shouldThrow(\ReflectionException::class, '/Given object is not an instance/', function() {
           declaration('public function %s() { }')->invokeArgs(new \stdClass(), []);
         });
+      }),
+
+      it('will invoke static methods even with incompatible instances', function() {
+        $decl= declaration('static function %s() { return "Test"; }');
+        shouldEqual('Test', $decl->invokeArgs(new \stdClass(), []));
       }),
     ]),
 
