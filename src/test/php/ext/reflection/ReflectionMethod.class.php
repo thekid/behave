@@ -359,7 +359,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
 
       it('will raise an exception when trying to invoke instance methods without an instance', function() {
-        shouldThrow(\ReflectionException::class, '/Non-object passed/', function() {
+        shouldThrow(\ReflectionException::class, '/Trying to invoke non static method .+ without an object/', function() {
           declaration('public function %s() { }')->invoke(null);
         });
       }),
