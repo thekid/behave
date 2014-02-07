@@ -12,7 +12,7 @@ class Fixture extends Base {
 }
 
 function fixtureField($name) {
-  return new \ReflectionProperty(__NAMESPACE__.'\Fixture', $name);
+  return new \ReflectionProperty(Fixture::class, $name);
 }
 
 // @see http://de3.php.net/manual/de/class.reflectionproperty.php
@@ -20,19 +20,19 @@ return new \behaviour\of\TheClass('ReflectionProperty', [
 
   'describe' => [
     it('raises warnings when without arguments', function() {
-      shouldThrow('ReflectionException', '/Parameters must not be null/', function() { 
+      shouldThrow(\ReflectionException::class, '/Parameters must not be null/', function() { 
         new \ReflectionProperty();
       });
     }),
 
     it('raises warnings when constructed with just one argument ', function() {
-      shouldThrow('ReflectionException', '/Parameters must not be null/', function() { 
+      shouldThrow(\ReflectionException::class, '/Parameters must not be null/', function() { 
         new \ReflectionProperty('__irrelevant__');
       });
     }),
 
     it('can be constructed with a class name and property name', function() {
-      shouldBe('ReflectionProperty', fixtureField('field'));
+      shouldBe(\ReflectionProperty::class, fixtureField('field'));
     }),
 
     it('will have a public member "name"', function() {
@@ -49,11 +49,11 @@ return new \behaviour\of\TheClass('ReflectionProperty', [
     // @see http://de3.php.net/manual/de/reflectionproperty.getdeclaringclass.php
     its('getDeclaringClass', [
       it('returns the declaring class', ['field', 'internal'], function($prop) {
-        shouldEqual(__NAMESPACE__.'\Fixture', fixtureField($prop)->getDeclaringClass()->name);
+        shouldEqual(Fixture::class, fixtureField($prop)->getDeclaringClass()->name);
       }),
 
       it('returns the declaring class for inherited properties', ['inherited', 'EMPTY'], function($prop) {
-        shouldEqual(__NAMESPACE__.'\Base', fixtureField($prop)->getDeclaringClass()->name);
+        shouldEqual(Base::class, fixtureField($prop)->getDeclaringClass()->name);
       }),
     ]),
 

@@ -13,7 +13,7 @@ class Fixture extends Base {
 
 // Helper: Returns a new ReflectionClass for the fixture function
 function newFixture() {
-  return new \ReflectionClass(__NAMESPACE__.'\Fixture');
+  return new \ReflectionClass(Fixture::class);
 }
 
 // Helper: Returns a new ReflectionClass in the "standard" extension
@@ -34,33 +34,33 @@ return new \behaviour\of\TheClass('ReflectionClass', [
 
   'describe' => [
     it('raises warnings when without arguments', function() {
-      shouldThrow('ReflectionException', '/Class  does not exist/', function() {
+      shouldThrow(\ReflectionException::class, '/Class  does not exist/', function() {
         new \ReflectionClass();
       });
     }),
 
     it('can be constructed with a class name', function() {
-      shouldBe('ReflectionClass', new \ReflectionClass(__NAMESPACE__.'\Fixture'));
+      shouldBe(\ReflectionClass::class, new \ReflectionClass(Fixture::class));
     }),
 
     it('can be constructed with an object', function() {
-      shouldBe('ReflectionClass', new \ReflectionClass(new Fixture()));
+      shouldBe(\ReflectionClass::class, new \ReflectionClass(new Fixture()));
     }),
 
     it('raises an exception when the given class does not exist', function() {
-      shouldThrow('ReflectionException', '/Class __non-existant__ does not exist/', function() {
+      shouldThrow(\ReflectionException::class, '/Class __non-existant__ does not exist/', function() {
         new \ReflectionClass('__non-existant__');
       });
     }),
 
     it('will have a public member "name"', function() {
-      shouldEqual(__NAMESPACE__.'\Fixture', newFixture()->name);
+      shouldEqual(Fixture::class, newFixture()->name);
     }),
 
     // @see http://de3.php.net/manual/de/reflectionclass.getname.php
     its('getName', [
       it('returns the class\' name', function() {
-        shouldEqual(__NAMESPACE__.'\Fixture', newFixture()->getName());
+        shouldEqual(Fixture::class, newFixture()->getName());
       }),
     ]),
 
@@ -129,21 +129,21 @@ return new \behaviour\of\TheClass('ReflectionClass', [
     // @see http://de3.php.net/manual/de/reflectionclass.getparentclass.php
     its('getParentClass', [
       it('returns the parent class for child classes', function() {
-        shouldEqual(__NAMESPACE__.'\Base', newFixture()->getParentClass()->name);
+        shouldEqual(Base::class, newFixture()->getParentClass()->name);
       }),
 
       it('returns false for the base class', function() {
-        shouldEqual(false, (new \ReflectionClass(__NAMESPACE__.'\Base'))->getParentClass());
+        shouldEqual(false, (new \ReflectionClass(Base::class))->getParentClass());
       }),
     ]),
 
     // @see http://de3.php.net/manual/de/reflectionclass.issubclassof.php
     its('isSubclassOf', [
-      it('is subclass of base', [__NAMESPACE__.'\Base', new \ReflectionClass(__NAMESPACE__.'\Base')], function($variant) {
+      it('is subclass of base', [Base::class, new \ReflectionClass(Base::class)], function($variant) {
         shouldEqual(true, newFixture()->isSubclassOf($variant));
       }),
 
-      it('is not subclass of self', [__NAMESPACE__.'\Fixture', new \ReflectionClass(__NAMESPACE__.'\Fixture')], function($variant) {
+      it('is not subclass of self', [Fixture::class, new \ReflectionClass(Fixture::class)], function($variant) {
         shouldEqual(false, newFixture()->isSubclassOf($variant));
       }),
 
@@ -159,7 +159,7 @@ return new \behaviour\of\TheClass('ReflectionClass', [
       }),
 
       it('a Fixture object is instance of base', function() {
-        shouldEqual(true, (new \ReflectionClass(__NAMESPACE__.'\Base'))->isInstance(new Fixture()));
+        shouldEqual(true, (new \ReflectionClass(Base::class))->isInstance(new Fixture()));
       }),
 
       it('a Fixture object is not an instance of the built-in Exception class', function() {
@@ -430,7 +430,7 @@ return new \behaviour\of\TheClass('ReflectionClass', [
       }),
 
       it('returns constructor method', function() {
-        shouldBe('ReflectionMethod', declaration('class %s { public function __construct() { }}')->getConstructor());
+        shouldBe(\ReflectionMethod::class, declaration('class %s { public function __construct() { }}')->getConstructor());
       }),
     ]),
 
@@ -478,21 +478,21 @@ return new \behaviour\of\TheClass('ReflectionClass', [
 
       it('returns properties in the order declared', function() {
         shouldEqual(['a', 'b'], array_map(
-          function($e) { return shouldBe('ReflectionProperty', $e)->name; },
+          function($e) { return shouldBe(\ReflectionProperty::class, $e)->name; },
           declaration('class %s { public $a; private $b; }')->getProperties()
         ));
       }),
 
       it('filter properties not included in filter', function() {
         shouldEqual(['a'], array_map(
-          function($e) { return shouldBe('ReflectionProperty', $e)->name; },
+          function($e) { return shouldBe(\ReflectionProperty::class, $e)->name; },
           declaration('class %s { public $a; private $b; }')->getProperties(\ReflectionMethod::IS_PUBLIC)
         ));
       }),
 
       it('includes inherited properties before own properties', function() {
         shouldEqual(['field', 'base'], array_map(
-          function($e) { return shouldBe('ReflectionProperty', $e)->name; },
+          function($e) { return shouldBe(\ReflectionProperty::class, $e)->name; },
           newFixture()->getProperties()
         ));
       })
@@ -539,13 +539,13 @@ return new \behaviour\of\TheClass('ReflectionClass', [
     // @see http://de3.php.net/manual/de/reflectionclass.getproperty.php
     its('getProperty', [
       it('raises an exception when the property does non exist', function() {
-        shouldThrow('ReflectionException', '/Property .+::__non-existant__ does not exist/', function() {
+        shouldThrow(\ReflectionException::class, '/Property .+::__non-existant__ does not exist/', function() {
           declaration('class %s { }')->getProperty('__non-existant__');
         });
       }),
 
       it('returns existing property', function() {
-        shouldBe('ReflectionProperty', newFixture()->getProperty('field'));
+        shouldBe(\ReflectionProperty::class, newFixture()->getProperty('field'));
       }),
     ]),
 
@@ -563,13 +563,13 @@ return new \behaviour\of\TheClass('ReflectionClass', [
     // @see http://de3.php.net/manual/de/reflectionclass.getmethod.php
     its('getMethod', [
       it('raises an exception when the method does non exist', function() {
-        shouldThrow('ReflectionException', '/Method .+::__non-existant__ does not exist/', function() {
+        shouldThrow(\ReflectionException::class, '/Method .+::__non-existant__ does not exist/', function() {
           declaration('class %s { }')->getMethod('__non-existant__');
         });
       }),
 
       it('returns existing method', function() {
-        shouldBe('ReflectionMethod', newFixture()->getMethod('method'));
+        shouldBe(\ReflectionMethod::class, newFixture()->getMethod('method'));
       }),
     ]),
 
@@ -581,14 +581,14 @@ return new \behaviour\of\TheClass('ReflectionClass', [
 
       it('returns methods in the order declared', function() {
         shouldEqual(['a', 'b'], array_map(
-          function($e) { return shouldBe('ReflectionMethod', $e)->name; },
+          function($e) { return shouldBe(\ReflectionMethod::class, $e)->name; },
           declaration('class %s { public function a() { } private function b() { }}')->getMethods()
         ));
       }),
 
       it('filter methods not included in filter', function() {
         shouldEqual(['a'], array_map(
-          function($e) { return shouldBe('ReflectionMethod', $e)->name; },
+          function($e) { return shouldBe(\ReflectionMethod::class, $e)->name; },
           declaration('class %s { public function a() { } private function b() { }}')->getMethods(\ReflectionMethod::IS_PUBLIC)
         ));
       }),

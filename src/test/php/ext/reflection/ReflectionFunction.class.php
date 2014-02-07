@@ -27,17 +27,17 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
 
   'describe' => [
     it('raises warnings when without arguments', function() {
-      shouldThrow('ReflectionException', '/Function  does not exist/', function() {
+      shouldThrow(\ReflectionException::class, '/Function  does not exist/', function() {
         new \ReflectionFunction();
       });
     }),
 
     it('can be constructed with a function name', function() {
-      shouldBe('ReflectionFunction', new \ReflectionFunction('strstr'));
+      shouldBe(\ReflectionFunction::class, new \ReflectionFunction('strstr'));
     }),
 
     it('can be constructed with a closure', function() {
-      shouldBe('ReflectionFunction', new \ReflectionFunction(function() { }));
+      shouldBe(\ReflectionFunction::class, new \ReflectionFunction(function() { }));
     }),
 
     it('will have a public member "name"', function() {

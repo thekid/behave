@@ -15,7 +15,7 @@ class Fixture extends Base {
 
 // Helper: Returns a new ReflectionMethod for the fixture's method()
 function newFixture($name) {
-  return new \ReflectionMethod(__NAMESPACE__.'\Fixture', $name);
+  return new \ReflectionMethod(Fixture::class, $name);
 }
 
 // Helper: Returns ReflectionMethod for a method created dynamically via its declaration
@@ -31,17 +31,17 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
 
   'describe' => [
     it('raises warnings when constructed without arguments', function() {
-      shouldThrow('ReflectionException', '/Method :: does not exist/', function() {
+      shouldThrow(\ReflectionException::class, '/Method :: does not exist/', function() {
         new \ReflectionMethod();
       });
     }),
 
     it('can be constructed with a class and a method name', function() {
-      shouldBe('ReflectionMethod', new \ReflectionMethod(__NAMESPACE__.'\Fixture', 'method'));
+      shouldBe(\ReflectionMethod::class, new \ReflectionMethod(Fixture::class, 'method'));
     }),
 
     it('can be constructed with a class and a method name separated by double colon', function() {
-      shouldBe('ReflectionMethod', new \ReflectionMethod(__NAMESPACE__.'\Fixture'.'::method'));
+      shouldBe(\ReflectionMethod::class, new \ReflectionMethod(Fixture::class.'::method'));
     }),
 
     it('will have a public member "name"', function() {
@@ -89,11 +89,11 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
 
       it('parameter\'s name from base class', function() {
-        shouldEqual('offset', (new \ReflectionMethod(__NAMESPACE__.'\\Base', 'value'))->getParameters()[0]->name);
+        shouldEqual('offset', (new \ReflectionMethod(\Base::class, 'value'))->getParameters()[0]->name);
       }),
 
       it('parameter\'s name matches declaration when overwritten from base class', function() {
-        shouldEqual('index', (new \ReflectionMethod(__NAMESPACE__.'\\Fixture', 'value'))->getParameters()[0]->name);
+        shouldEqual('index', (new \ReflectionMethod(\Fixture::class, 'value'))->getParameters()[0]->name);
       }),
     ]),
 
@@ -139,11 +139,11 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
 
       it('returns false for private final methods', function() {
-        shouldEqual(false, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'values'))->isPublic());
+        shouldEqual(false, (new \ReflectionMethod(Base::class, 'values'))->isPublic());
       }),
 
       it('returns false for protected abstract methods', function() {
-        shouldEqual(false, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'value'))->isPublic());
+        shouldEqual(false, (new \ReflectionMethod(Base::class, 'value'))->isPublic());
       }),
     ]),
 
@@ -166,11 +166,11 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
 
       it('returns false for private final methods', function() {
-        shouldEqual(false, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'values'))->isProtected());
+        shouldEqual(false, (new \ReflectionMethod(Base::class, 'values'))->isProtected());
       }),
 
       it('returns true for protected abstract methods', function() {
-        shouldEqual(true, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'value'))->isProtected());
+        shouldEqual(true, (new \ReflectionMethod(Base::class, 'value'))->isProtected());
       }),
     ]),
 
@@ -193,11 +193,11 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
 
       it('returns true for private final methods', function() {
-        shouldEqual(true, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'values'))->isPrivate());
+        shouldEqual(true, (new \ReflectionMethod(Base::class, 'values'))->isPrivate());
       }),
 
       it('returns false for protected abstract methods', function() {
-        shouldEqual(false, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'value'))->isPrivate());
+        shouldEqual(false, (new \ReflectionMethod(Base::class, 'value'))->isPrivate());
       }),
     ]),
 
@@ -220,11 +220,11 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
 
       it('returns false for private final methods', function() {
-        shouldEqual(false, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'values'))->isStatic());
+        shouldEqual(false, (new \ReflectionMethod(Base::class, 'values'))->isStatic());
       }),
 
       it('returns false for protected abstract methods', function() {
-        shouldEqual(false, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'value'))->isStatic());
+        shouldEqual(false, (new \ReflectionMethod(Base::class, 'value'))->isStatic());
       }),
     ]),
 
@@ -247,11 +247,11 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
 
       it('returns true for private final methods', function() {
-        shouldEqual(true, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'values'))->isFinal());
+        shouldEqual(true, (new \ReflectionMethod(Base::class, 'values'))->isFinal());
       }),
 
       it('returns false for protected abstract methods', function() {
-        shouldEqual(false, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'value'))->isFinal());
+        shouldEqual(false, (new \ReflectionMethod(Base::class, 'value'))->isFinal());
       }),
     ]),
 
@@ -274,11 +274,11 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
 
       it('returns false for private final methods', function() {
-        shouldEqual(false, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'values'))->isAbstract());
+        shouldEqual(false, (new \ReflectionMethod(Base::class, 'values'))->isAbstract());
       }),
 
       it('returns true for protected abstract methods', function() {
-        shouldEqual(true, (new \ReflectionMethod(__NAMESPACE__.'\Base', 'value'))->isAbstract());
+        shouldEqual(true, (new \ReflectionMethod(Base::class, 'value'))->isAbstract());
       }),
     ]),
 
@@ -286,21 +286,21 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
     its('getClosure', [
 
       it('raises a warning when invoked without arguments', function() {
-        shouldThrow('ReflectionException', '/Given object is not an instance of the class/', function() {
+        shouldThrow(\ReflectionException::class, '/Given object is not an instance of the class/', function() {
           newFixture('method')->getClosure();
         });
       }),
 
       it('returns a closure', function() {
-        shouldBe('Closure', newFixture('method')->getClosure(new Fixture()));
+        shouldBe(\Closure::class, newFixture('method')->getClosure(new Fixture()));
       }),
 
       it('returns a closure for static methods', function() {
-        shouldBe('Closure', newFixture('valueOf')->getClosure(null));
+        shouldBe(\Closure::class, newFixture('valueOf')->getClosure(null));
       }),
 
       it('throws an exception when an incorrect object is passed', function() {
-        shouldThrow('ReflectionException', '/Given object is not an instance of the class/', function() {
+        shouldThrow(\ReflectionException::class, '/Given object is not an instance of the class/', function() {
           newFixture('method')->getClosure(new \stdClass());
         });
       }),
