@@ -89,11 +89,11 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
 
       it('parameter\'s name from base class', function() {
-        shouldEqual('offset', (new \ReflectionMethod(\Base::class, 'value'))->getParameters()[0]->name);
+        shouldEqual('offset', (new \ReflectionMethod(Base::class, 'value'))->getParameters()[0]->name);
       }),
 
       it('parameter\'s name matches declaration when overwritten from base class', function() {
-        shouldEqual('index', (new \ReflectionMethod(\Fixture::class, 'value'))->getParameters()[0]->name);
+        shouldEqual('index', (new \ReflectionMethod(Fixture::class, 'value'))->getParameters()[0]->name);
       }),
     ]),
 
