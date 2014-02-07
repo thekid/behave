@@ -24,7 +24,7 @@ function functionParameter($arg) {
 
 // Helper: Returns a new ReflectionParameter for the Fixture's method
 function methodParameter($method, $num) {
-  return (new \ReflectionMethod(__NAMESPACE__.'\Fixture', $method))->getParameters()[$num];
+  return (new \ReflectionMethod(Fixture::class, $method))->getParameters()[$num];
 }
 
 // Helper: Returns parameters for a function created dynamically via its signature
