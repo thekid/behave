@@ -147,11 +147,11 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
       }),
 
       it('return a ReflectionParameter instance for a single parameter', function() {
-        shouldBe(['ReflectionParameter'], declaration('function %s($a) { }')->getParameters());
+        shouldBe([\ReflectionParameter::class], declaration('function %s($a) { }')->getParameters());
       }),
 
       it('return a non-empty array of ReflectionParameter instances', function() {
-        shouldBe(['ReflectionParameter', 'ReflectionParameter'], declaration('function %s($a, $b) { }')->getParameters());
+        shouldBe([\ReflectionParameter::class, \ReflectionParameter::class], declaration('function %s($a, $b) { }')->getParameters());
       }),
     ]),
 

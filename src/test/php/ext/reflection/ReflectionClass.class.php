@@ -419,7 +419,7 @@ return new \behaviour\of\TheClass('ReflectionClass', [
           public function serialize() { }
           public function unserialize($stream) { }
         }');
-        shouldBe(['Serializable' => 'ReflectionClass'], $class->getInterfaces());
+        shouldBe(['Serializable' => \ReflectionClass::class], $class->getInterfaces());
       }),
     ]),
   
