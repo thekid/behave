@@ -76,7 +76,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
       shouldBe(\ReflectionParameter::class, functionParameter(0));
     }),
 
-    it('can be constructed with a function and  string', ['param', 'second'], function($name) {
+    it('can be constructed with a function and a string', ['param', 'second'], function($name) {
       shouldBe(\ReflectionParameter::class, functionParameter($name));
     }),
 
