@@ -364,6 +364,53 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       }),
     ]),
 
+    // @see http://de3.php.net/manual/de/reflectionmethod.invokeargs.php
+    its('invokeArgs', [
+      it('will invoke no-arg methods', function() {
+        $decl= declaration('public function %s() { return "Test"; }');
+        $instance= $decl->getDeclaringClass()->newInstance();
+        shouldEqual('Test', $decl->invokeArgs($instance, []));
+      }),
+
+      it('will pass a given argument to the method', function() {
+        $decl= declaration('public function %s($arg) { return $arg; }');
+        $instance= $decl->getDeclaringClass()->newInstance();
+        shouldEqual('Test', $decl->invokeArgs($instance, ['Test']));
+      }),
+
+      it('will pass given arguments to the method', function() {
+        $decl= declaration('public function %s($a, $b) { return [$a, $b]; }');
+        $instance= $decl->getDeclaringClass()->newInstance();
+        shouldEqual([1, 2], $decl->invokeArgs($instance, [1, 2]));
+      }),
+
+      it('will raise an exception when trying to invoke non-public methods', ['private', 'protected'], function($modifier) {
+        shouldThrow(\ReflectionException::class, '/Trying to invoke '.$modifier.' method/', function() use($modifier) {
+          $decl= declaration($modifier.' function %s() { }');
+          $instance= $decl->getDeclaringClass()->newInstance();
+          $decl->invokeArgs($instance, []);
+        });
+      }),
+
+      it('will raise an exception when trying to invoke abstract methods', function() {
+        shouldThrow(\ReflectionException::class, '/Trying to invoke abstract method/', function() {
+          declaration('abstract function %s();', 'abstract')->invokeArgs(new \stdClass(), []);
+        });
+      }),
+
+      it('will raise an exception when trying to invoke instance methods without an instance', function() {
+        shouldThrow(\ReflectionException::class, '/Trying to invoke non static method .+ without an object/', function() {
+          declaration('public function %s() { }')->invokeArgs(null, []);
+        });
+      }),
+
+      it('will raise an exception when trying to invoke instance methods with non-compatible instance', function() {
+        shouldThrow(\ReflectionException::class, '/Given object is not an instance/', function() {
+          declaration('public function %s() { }')->invokeArgs(new \stdClass(), []);
+        });
+      }),
+    ]),
+
     // @see https://github.com/facebook/hhvm/issues/1357
     given(declaration('function %s($a, $b = null, $c) { }'), its('getNumberOfRequiredParameters', [
       it('regard all three as required parameters', function($decl) {
