@@ -124,7 +124,7 @@ return new \behaviour\of\TheClass('ReflectionParameter', [
     }),
 
     it('can be retrieved via ReflectionFunction\'s getParameters()', function() {
-      $param= (new \ReflectionFunction(fixture::class))->getParameters()[0];
+      $param= (new \ReflectionFunction(__NAMESPACE__.'\fixture'))->getParameters()[0];
       shouldEqual('param', $param->name);
     }),
 
