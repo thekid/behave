@@ -13,7 +13,7 @@ class Fixture extends Base {
 
 // Helper: Returns a new ReflectionClass for the fixture function
 function newFixture() {
-  return new \ReflectionClass(__NAMESPACE__.'\Fixture');
+  return new \ReflectionClass(Fixture::class);
 }
 
 // Helper: Returns a new ReflectionClass in the "standard" extension
