@@ -1,6 +1,6 @@
 Behaviour tests for PHP functionality
 =====================================
-This tests PHP functionality using a fluent function-based DSL. In contrast to the *PHPT* tests, all tests are run in the same interpreter instance, speeding up functional verification of a PHP implemenentation drastically.
+This tests PHP functionality using a fluent function-based DSL. In contrast to the *PHPT* tests, all tests are run in the same interpreter instance, speeding up functional verification of a PHP implementation drastically.
 
 Prerequisites
 -------------
