@@ -49,6 +49,16 @@ return new \behaviour\of\TheClass('ReflectionFunction', [
       it('returns the function\'s name', function() {
         shouldEqual(__NAMESPACE__.'\fixture', newFixture()->getName());
       }),
+
+      // @see https://github.com/facebook/hhvm/issues/1699
+      it('returns a special name for closures', function() {
+        shouldEqual('{closure}', (new \ReflectionFunction(eval('return function() { };')))->getName());
+      }),
+
+      // @see https://github.com/facebook/hhvm/issues/1699
+      it('returns a special name for closures inside namespaces', function() {
+        shouldEqual(__NAMESPACE__.'\{closure}', (new \ReflectionFunction(function() { }))->getName());
+      }),
     ]),
 
     // @see http://de3.php.net/manual/de/reflectionfunctionabstract.getnamespacename.php
