@@ -8,11 +8,13 @@ abstract class Base {
   public static function valueOf($in) { return ['in' => $in]; }
   private final function values() { }
   protected abstract function value($offset);
+  protected static function extended() { return 'base'; }
 }
 class Fixture extends Base {
   public function method() { return true; }
   private function internal() { }
   protected function value($index) { }
+  protected static function extended() { return 'extended'; }
 }
 
 // Helper: Returns a new ReflectionMethod for the fixture's method()
@@ -385,6 +387,13 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
         $decl= declaration('static function %s() { return "Test"; }');
         shouldEqual('Test', $decl->invoke(new \stdClass()));
       }),
+
+      // see https://github.com/facebook/hhvm/issues/1770
+      it('will invoke inherited static methods', function() {
+        $fixture= newFixture('extended');
+        $fixture->setAccessible(true);
+        shouldEqual('extended', $fixture->invoke(null));
+      }),
     ]),
 
     // @see http://de3.php.net/manual/de/reflectionmethod.invokeargs.php
@@ -470,7 +479,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       it('simplest form', function() {
         shouldEqual(
           "Method [ <user> public method fixture ] {\n".
-          "  @@ ".__FILE__."(27) : eval()'d code 1 - 1\n".
+          "  @@ ".__FILE__."(29) : eval()'d code 1 - 1\n".
           "}\n",
           (string)declaration('function %s() { }')
         );
@@ -479,7 +488,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       it('abstract form', ['abstract public', 'abstract protected'], function($modifiers) {
         shouldEqual(
           "Method [ <user> {$modifiers} method fixture ] {\n".
-          "  @@ ".__FILE__."(27) : eval()'d code 1 - 1\n".
+          "  @@ ".__FILE__."(29) : eval()'d code 1 - 1\n".
           "}\n",
           (string)declaration($modifiers.' function %s();', 'abstract')
         );
@@ -488,7 +497,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       it('final form', ['final public', 'final protected', 'final private'], function($modifiers) {
         shouldEqual(
           "Method [ <user> {$modifiers} method fixture ] {\n".
-          "  @@ ".__FILE__."(27) : eval()'d code 1 - 1\n".
+          "  @@ ".__FILE__."(29) : eval()'d code 1 - 1\n".
           "}\n",
           (string)declaration($modifiers.' function %s() { }')
         );
@@ -497,7 +506,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       it('will include modifiers', ['private', 'protected', 'public'], function($modifiers) {
         shouldEqual(
           "Method [ <user> {$modifiers} method fixture ] {\n".
-          "  @@ ".__FILE__."(27) : eval()'d code 1 - 1\n".
+          "  @@ ".__FILE__."(29) : eval()'d code 1 - 1\n".
           "}\n",
           (string)declaration($modifiers.' function %s() { }')
         );
@@ -506,7 +515,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       it('will include return by reference', function() {
         shouldEqual(
           "Method [ <user> public method &fixture ] {\n".
-          "  @@ ".__FILE__."(27) : eval()'d code 1 - 1\n".
+          "  @@ ".__FILE__."(29) : eval()'d code 1 - 1\n".
           "}\n",
           (string)declaration('function &%s() { }')
         );
@@ -516,7 +525,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
         shouldEqual(
           "/** Documented */\n".
           "Method [ <user> public method fixture ] {\n".
-          "  @@ ".__FILE__."(27) : eval()'d code 1 - 1\n".
+          "  @@ ".__FILE__."(29) : eval()'d code 1 - 1\n".
           "}\n",
           (string)declaration('/** Documented */ function %s() { }')
         );
@@ -526,7 +535,7 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
         $decl= declaration('function %s($a) { }');
         shouldEqual(
           "Method [ <user> public method fixture ] {\n".
-          "  @@ ".__FILE__."(27) : eval()'d code 1 - 1\n".
+          "  @@ ".__FILE__."(29) : eval()'d code 1 - 1\n".
           "\n".
           "  - Parameters [1] {\n".
           "    ".$decl->getParameters()[0]."\n".
