@@ -8,11 +8,13 @@ abstract class Base {
   public static function valueOf($in) { return ['in' => $in]; }
   private final function values() { }
   protected abstract function value($offset);
+  protected static function extended() { return 'base'; }
 }
 class Fixture extends Base {
   public function method() { return true; }
   private function internal() { }
   protected function value($index) { }
+  protected static function extended() { return 'extended'; }
 }
 
 // Helper: Returns a new ReflectionMethod for the fixture's method()
@@ -384,6 +386,13 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       it('will invoke static methods even with incompatible instances', function() {
         $decl= declaration('static function %s() { return "Test"; }');
         shouldEqual('Test', $decl->invoke(new \stdClass()));
+      }),
+
+      // see https://github.com/facebook/hhvm/issues/1770
+      it('will invoke inherited static methods', function() {
+        $fixture= newFixture('extended');
+        $fixture->setAccessible(true);
+        shouldEqual('extended', $fixture->invoke(null));
       }),
     ]),
 
