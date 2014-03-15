@@ -99,6 +99,11 @@ return new \behaviour\of\TheClass('ReflectionMethod', [
       it('parameter\'s name matches declaration when overwritten from base class', function() {
         shouldEqual('index', (new \ReflectionMethod(Fixture::class, 'value'))->getParameters()[0]->name);
       }),
+
+      // @see https://github.com/facebook/hhvm/issues/2057
+      it('should not choke on an "int" typehint', function() {
+        (new \ReflectionMethod('FilesystemIterator', 'setFlags'))->getParameters();
+      }),
     ]),
 
     // @see http://de3.php.net/manual/de/reflectionfunctionabstract.getnumberofrequiredparameters.php
